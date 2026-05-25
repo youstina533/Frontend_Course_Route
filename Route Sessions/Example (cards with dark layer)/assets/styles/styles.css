@@ -1,0 +1,144 @@
+* , *::before, *::after{
+    box-sizing: border-box;
+    margin:0;
+    padding:0;
+}
+body{
+    font-family: 'Poppins', sans-serif;
+}
+.container{
+    width:80%;
+    margin:auto;
+}
+.d-flex{
+    display: flex;
+}
+.flex-wrap{
+    flex-wrap: wrap;
+}
+.w-100{
+   width:100%;
+}
+ul{
+    list-style: none;
+}
+a{
+    text-decoration: none;
+}  
+#ourMenu .item .inner{
+    position:relative;
+    overflow:hidden;
+} 
+#ourMenu .item-caption{
+    background-color: rgba(0,0,0,0.6);
+    color:white;
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    text-align: center;
+    transform: translateY(100%);
+    opacity:0;
+    transition: transform 1s, opacity 1s;
+}
+#ourMenu .item:hover .item-caption{
+    transform: translateY(0%) rotate(360deg);
+    opacity:1;
+}
+#ourMenu .item .item-caption h3{
+    background-color:#333333;
+    padding:15px 0px;
+    transform: translateX(110%);
+    transition: transform 1s 2s;
+}
+#ourMenu .item .item-caption p{
+    width:80%;
+    margin:20px auto;
+    transform: translateX(150%);
+    transition: transform 1s 3s;
+}
+#ourMenu .item:hover h3{
+    transform: translateX(0%);
+}
+#ourMenu .item:hover p{
+    transform: translateX(0%);
+}
+#ourMenu .item .inner img{
+    display:block;
+    transition:transform 1s 1s;
+}
+#ourMenu .item:hover img{
+    transform: scale(1.2);
+}
+
+@media screen and (min-width: 640px) and (max-width: 768px) {
+  .sm-100{
+    width:100%
+  }
+  .sm-50{
+    width:50%
+  }
+  .sm-33{
+    width:33.33%
+  }
+  .sm-25{
+    width:25%
+  }
+  .sm-20{
+    width:20%
+  }  
+}
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .md-100{
+    width:100%
+  }
+  .md-50{
+    width:50%
+  }
+  .md-33{
+    width:33.33%
+  }
+  .md-25{
+    width:25%
+  }
+  .md-20{
+    width:20%
+  }  
+    
+}
+@media screen and (min-width: 1024px) and (max-width: 1280px) {
+  .lg-100{
+    width:100%
+  }
+  .lg-50{
+    width:50%
+  }
+  .lg-33{
+    width:33.33%
+  }
+  .lg-25{
+    width:25%
+  }
+  .lg-20{
+    width:20%
+  }  
+    
+}@media screen and (min-width: 1280px) {
+  .xl-100{
+    width:100%
+  }
+  .xl-50{
+    width:50%
+  }
+  .xl-33{
+    width:33.33%
+  }
+  .xl-25{
+    width:25%
+  }
+  .xl-20{
+    width:20%
+  }  
+    
+}
