@@ -1,0 +1,23 @@
+nav{
+    background-color: rgb(209, 176, 239);
+}
+nav .nav-div .nav-ul .nav-link{
+    background-color: rgb(97, 25, 165);
+    color:white;
+}
+nav .nav-div .nav-ul .active-link .nav-link{
+    background-color: blueviolet;
+    color:white;
+}
+.my-nav-tab{
+    margin-top: 100px;
+}
+.my-nav-tab .nav-item .nav-link{
+    background-color: blueviolet;
+    color:white;
+    margin:10px;
+}
+.my-nav-tab .nav-item .active{
+    background-color: rgb(191, 148, 232);
+    color:black;
+}
