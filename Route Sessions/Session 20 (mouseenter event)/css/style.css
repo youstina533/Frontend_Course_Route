@@ -1,0 +1,12 @@
+.dark{
+    margin-right:20px;
+    border:2px solid white;
+    background-color: rgb(137, 44, 224);
+    color:white;
+}
+.light{
+    margin-right:20px;
+    border:2px solid rgb(19, 19, 19);
+    background-color: rgb(205, 171, 238);
+    color:black;
+}
