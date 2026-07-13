@@ -1,0 +1,111 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CRUD Example</title>
+    <!-- Link to Font Awesome icons library -->
+    <link rel="stylesheet" href="css/all.min.css" />
+    <!-- Link to Bootstrap CSS for styling -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <!-- Link to custom CSS for additional styling -->
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <main>
+      <section>
+        <div class="container bg-info  bg-opacity-75 p-2 rounded-4 my-2">
+          <!-- Section Title -->
+          <h1 class="text-center">CRUD SYSTEM</h1>
+
+          <!-- Product Name Input Field -->
+          <div class="form-floating mb-3">
+            <input oninput="validName()" type="text" class="form-control" id="productName" placeholder=" " />
+            <p class="alert alert-danger d-none" id="nameError">The name of the product must start with capital letter</p>
+            <label for="productName">Product Name</label>
+     
+          </div>
+
+          <!-- Product Price Input Field -->
+          <div class="form-floating mb-3">
+            <input type="number" oninput="validPrice()" class="form-control" id="productPrice" placeholder=" " />
+            <p class="alert alert-danger d-none" id="priceError">The price of the product must be not negative or zero</p>
+            <label for="productPrice">Product Price</label>
+        
+          </div>
+
+          <!-- Product Category Input Field with Datalist for Options -->
+          <div class="form-floating mb-3">
+            <input
+              list="list"
+              type="text"
+              oninput="validCategory()"
+              class="form-control"
+              id="productCategory"
+              placeholder=" "
+            />
+            <p class="alert alert-danger d-none" id="categoryError">The Category of the product must start with capital letter</p>
+            <label for="productCategory">Product Category</label>
+
+            <datalist id="list">
+              <option value="Tv" />
+              <option value="Mobile" />
+              <option value="Screens" />
+              <option value="Electronic" />
+            </datalist>
+
+         
+          </div>
+
+          <!-- Product Description Input Field -->
+          <div class="form-floating mb-3">
+            <textarea oninput="validDescription()"
+              style="height: 100px"
+              class="form-control"
+              id="productDescription"
+              placeholder=>
+            </textarea>
+             <p class="alert alert-danger d-none" id="descriptionError">The Description of the Product should not be less than 5 words</p>
+            <label for="productDescription">Product Description</label>
+
+            <p id="msgDescription" class="alert alert-danger p-1 small w-50 d-none">
+              Please enter a description between 3 and 150 characters. Letters, numbers, punctuation, and spaces are
+              allowed.
+            </p>
+          </div>
+
+          <!-- Product Image Input Field -->
+          <div class="form-floating mb-3">
+            <input type="file" class="form-control" id="productImage" placeholder=" " />
+            <label for="productImage">Product Image</label>
+          </div>
+
+          <!-- Action Buttons: Add and Update Product -->
+          <div>
+            <button  id="btnAdd" class="btn btn-primary btn-sm" onclick="addProduct()">Add Product</button>
+            <button onclick="saveProduct()" id="btnUpdate" class="btn btn-warning btn-sm d-none">Update Product</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="pb-4">
+        <div class="container">
+          <!-- Search Input Field -->
+          <input
+            id="searchInput"
+            type="search"
+            oninput="searchProduct()"
+            class="form-control w-50 mx-auto"
+            placeholder="Search By Name...."
+          />
+
+          <!-- Product Display Area -->
+          <div id="rowData" class="row   my-4 g-4 data border p-4">
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Link to external JavaScript file for functionality -->
+    <script src="js/index.js"></script>
+  </body>
+</html>
