@@ -25,6 +25,8 @@ allProducts.logProduct();
 logMeal.getTodayDate();  
 logMeal.confirmData();  
 logMeal.showProducts();
+
+uiLogic.hideAppLoadingOverlay();
 logMeal.deleteAllProducts();
 logMeal.deleteProduct();
 logMeal.showWeeklyStats();
