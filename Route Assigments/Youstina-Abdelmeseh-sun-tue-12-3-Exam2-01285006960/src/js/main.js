@@ -27,7 +27,7 @@ logMeal.confirmData();
 logMeal.showProducts();
 logMeal.deleteAllProducts();
 logMeal.deleteProduct();
-
-uiLogic.hideAppLoadingOverlay();
 logMeal.showWeeklyStats();
 logMeal.showWeeklyOverview();
+
+uiLogic.hideAppLoadingOverlay();
