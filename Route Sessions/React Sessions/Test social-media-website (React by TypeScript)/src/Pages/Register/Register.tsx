@@ -1,9 +1,9 @@
-import RegisterForm from './RegisterComponents/RegisterForm';
+import RegisterFormReactHookFormAndZod from './RegisterComponents/RegisterFormReactHookFormAndZod';
 
 export default function Register() {
   return (
     <div>
-      <RegisterForm />
+      <RegisterFormReactHookFormAndZod />
     </div>
   )
 }
