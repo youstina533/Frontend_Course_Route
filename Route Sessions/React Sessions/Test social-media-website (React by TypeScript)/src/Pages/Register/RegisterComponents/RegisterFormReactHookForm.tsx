@@ -2,16 +2,16 @@
 
 import {useForm} from "react-hook-form";
 
-export default function RegisterFormReactHookForm() {
+interface UserData{  // kolhm string 34an al API 3ayz al data aly tegelo string
+    name: string,
+    email: string,
+    dateOfBirth: string,
+    gender: string,
+    password: string,
+    rePassword: string,
+}
 
-    interface UserData{  // kolhm string 34an al API 3ayz al data aly tegelo string
-        name: string,
-        email: string,
-        dateOfBirth: string,
-        gender: string,
-        password: string,
-        rePassword: string,
-    }
+export default function RegisterFormReactHookForm() {
 
     const form = useForm<UserData>({ //useForm dah hook, ya3ny function, ya3ny 2a2dr a3mlo generic data, ya3ny a7dd type l data aly gayalo
         defaultValues: {
