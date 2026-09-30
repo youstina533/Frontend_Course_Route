@@ -1,5 +1,9 @@
+import LoginFormReactHookFormAndZod from "./LoginComponents/LoginFormReactHookFormAndZod"
+
 export default function Login() {
   return (
-    <div>Login</div>
+    <>
+    <LoginFormReactHookFormAndZod/>
+    </>
   )
 }
