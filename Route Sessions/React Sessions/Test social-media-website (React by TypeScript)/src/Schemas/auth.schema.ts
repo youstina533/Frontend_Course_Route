@@ -33,6 +33,15 @@ export const registerSchema = zod.object({
     error: "Password and rePassword do not match"
 });
 
-
-
 export type RegisterSchemaType = zod.infer<typeof registerSchema>
+
+////////////////////////////////////////////
+
+export const loginSchema = zod.object({
+    email: zod.email().nonempty("Email is required"). regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, "Email is invalid"),
+    password: zod.string().nonempty("Password is required").regex(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/, "invalid password"),
+    
+})
+
+
+export type loginSchemaType = zod.infer<typeof loginSchema>
