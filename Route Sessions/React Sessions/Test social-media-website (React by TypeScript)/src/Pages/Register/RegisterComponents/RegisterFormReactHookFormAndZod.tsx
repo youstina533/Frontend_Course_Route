@@ -181,6 +181,7 @@ export default function RegisterFormReactHookFormAndZod() {
               <div className="items-center mb-4 inline-block">
                   <input id="female" 
                       {...register("gender")}
+                      value="female"
                       type="radio"
                       className="w-4 h-4 text-neutral-primary border-default-medium bg-neutral-secondary-medium rounded-full checked:border-brand focus:ring-2 focus:outline-none focus:ring-brand-subtle border border-default appearance-none"/>
                   <label 
