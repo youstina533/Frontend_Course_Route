@@ -4,6 +4,7 @@ import Register from './Pages/Register/Register';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Home from './Pages/Home/Home';
 import Profile from './Pages/Profile/Profile';
+import AuthContextProvider from './Context/AuthContextValue';
 
 function App() {
   const routers = createBrowserRouter([
@@ -21,7 +22,9 @@ function App() {
   ])
   return (
     <>
-      <RouterProvider router={routers}></RouterProvider>
+      <AuthContextProvider>
+        <RouterProvider router={routers}></RouterProvider>
+      </AuthContextProvider>
     </>
   )
 }
