@@ -49,15 +49,16 @@ export default function LoginFormReactHookFormAndZod() {
         axios.post(`https://route-posts.routemisr.com/users/signin`, loginrData) // 34an a3ml post l API wa ab3t al data aly gaya mn al form
         .then((response) =>{
            if(response.data.success){
-            alert("Login successful");
-            navigate("/");
+                localStorage.setItem("userToken", response.data.data.token); // 34an a7fz al token aly gay mn al API feh localStorage 34an a3ml redirect l al home page
+                alert("Login successful");
+                navigate("/");
            }
         })
         .catch((error)=>{
-            console.log(error.response.data.message);
-            setapiError(error.response.data.message) // 34an a3ml display l error aly gay mn al API
+                console.log(error.response.data.message);
+                setapiError(error.response.data.message) // 34an a3ml display l error aly gay mn al API
         }).finally(() =>{
-            setIsLoading(false) 
+                setIsLoading(false) 
         })
       }
   
