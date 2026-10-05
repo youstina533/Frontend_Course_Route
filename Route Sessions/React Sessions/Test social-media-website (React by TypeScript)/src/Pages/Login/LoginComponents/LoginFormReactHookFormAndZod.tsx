@@ -3,7 +3,8 @@ import {zodResolver} from "@hookform/resolvers/zod"
 import { loginSchema, type loginSchemaType } from './../../../Schemas/auth.schema';
 import axios from "axios"
 import { Link, useNavigate} from "react-router-dom";
-import { useState } from "react";
+import { useState, useState} from "react";
+import {AuthContext} from "../../../Context/AuthContextValue"
 
 // al interface wa al zod object kona bn3mlhm hena 2abl export login() bs wadenahm al schema  ///////
 
@@ -19,6 +20,7 @@ export default function LoginFormReactHookFormAndZod() {
     const navigate = useNavigate();
     const [apiError, setapiError] = useState(null) // 34an a3ml state l error aly gay mn al API 34an a3mlha display lma y7sl error feh
     const [isLoading, setIsLoading] = useState(false);
+    const {userToken, setuserToken} = useContext(AuthContext);
   
       const form = useForm<loginSchemaType>({ //useForm dah hook, ya3ny function, ya3ny 2a2dr a3mlo generic data, ya3ny a7dd type l data aly gayalo
         defaultValues: {
@@ -50,6 +52,7 @@ export default function LoginFormReactHookFormAndZod() {
         .then((response) =>{
            if(response.data.success){
                 localStorage.setItem("userToken", response.data.data.token); // 34an a7fz al token aly gay mn al API feh localStorage 34an a3ml redirect l al home page
+                setuserToken(response.data.data.token)
                 alert("Login successful");
                 navigate("/");
            }
