@@ -1,5 +1,4 @@
-
-    import Layout from './Layout/Layout';
+import Layout from './Layout/Layout';
 import Login from './Pages/Login/Login';
 import Register from './Pages/Register/Register';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
