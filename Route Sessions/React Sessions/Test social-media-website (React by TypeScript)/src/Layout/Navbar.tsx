@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {useState, useContext} from "react";
 import { FaBars } from "react-icons/fa";
 import { IoMdCloseCircle } from "react-icons/io";
@@ -13,6 +13,13 @@ import { AuthContext } from './../Context/AuthContextValue';
 export default function Navbar() {
   const [isOpen, setisOpen] = useState(false);
   const {userToken, setuserToken} = useContext(AuthContext); 
+  const navigate = useNavigate();
+
+  function logout(){
+    localStorage.removeItem("userToken");
+    setuserToken(null);
+    navigate("/login");
+  }
 
   return (
     <>
@@ -20,13 +27,14 @@ export default function Navbar() {
         <div className="max-w-7xl flex flex-wrap items-center justify-between mx-auto p-4">
           <Link to="/" className="flex items-center space-x-3 rtl:space-x-reverse">
             {/* <img src="" className="h-7" alt="Flowbite Logo" /> */}
-            <span className="self-center text-heading font-semibold whitespace-nowrap text-2xl text-blue-600">Facebook</span>
+            <span className="self-center text-heading font-semibold whitespace-nowrap text-2xl text-blue-700">Facebook</span>
           </Link>
           <div className="hidden md:flex items-center space-x-8">
             {userToken ? 
             <>
              <Link to="/" className="block py-2 px-3 text-blue-900 text-lg bg-brand rounded md:bg-transparent md:text-fg-brand md:p-0" aria-current="page">Home</Link>
              <Link to="/profile" className="block py-2 px-3 text-blue-900 text-lg  text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent">Profile</Link>
+             <button onClick={()=> logout()} className="inline-block bg-blue-900 rounded-xl pt-1 pb-2 px-2 hover:bg-blue-950 text-white text-lg text-heading cursor-pointer">Logout</button>
             </> :
             <>
             <Link to="/register" className="block py-2 px-3 text-blue-900 text-lg  text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent">Register</Link>
@@ -45,6 +53,7 @@ export default function Navbar() {
                 <>
                 <Link to="/" className="block py-2 px-3 text-blue-900 text-lg bg-brand rounded md:bg-transparent md:text-fg-brand md:p-0" aria-current="page">Home</Link>
                 <Link to="/profile" className="block py-2 px-3 text-blue-900 text-lg  text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent">Profile</Link>
+                <button onClick={()=> logout()} className="inline-block bg-blue-900 rounded-xl py-1 px-2 hover:bg-blue-950 text-white text-lg text-heading cursor-pointer">Logout</button>
                 </> :
                 <>
                 <Link to="/register" className="block py-2 px-3 text-blue-900 text-lg  text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent">Register</Link>
