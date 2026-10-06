@@ -20,7 +20,7 @@ export default function LoginFormReactHookFormAndZod() {
     const navigate = useNavigate();
     const [apiError, setapiError] = useState(null) // 34an a3ml state l error aly gay mn al API 34an a3mlha display lma y7sl error feh
     const [isLoading, setIsLoading] = useState(false);
-    const {userToken, setuserToken} = useContext(AuthContext);
+    const {setuserToken} = useContext(AuthContext);
   
       const form = useForm<loginSchemaType>({ //useForm dah hook, ya3ny function, ya3ny 2a2dr a3mlo generic data, ya3ny a7dd type l data aly gayalo
         defaultValues: {
