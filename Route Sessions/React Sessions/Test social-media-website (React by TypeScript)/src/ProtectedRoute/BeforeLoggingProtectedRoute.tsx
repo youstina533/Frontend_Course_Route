@@ -1,6 +1,7 @@
 import {Navigate} from "react-router-dom";
+import {type ReactNode} from "react";
 
-export default function BeforeLoggingProtectedRoute({children}) {
+export default function BeforeLoggingProtectedRoute({children} : {children: ReactNode }) {
     // const navigate = useNavigate();  // function navigate m4 btrg3 haga hena 34an keda masta5dmnha4 ba3d al return feh al if 34an m4 hatrg3 login component aw m4 hatwdeny leh
 
     if(!localStorage.getItem("userToken")){
