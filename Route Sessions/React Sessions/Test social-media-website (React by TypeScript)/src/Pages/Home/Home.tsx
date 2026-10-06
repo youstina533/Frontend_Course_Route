@@ -1,6 +1,9 @@
+import HomePosts from './HomeComponents/HomePosts';
 
 export default function Home() {
   return (
-    <div>Home</div>
+    <>
+      <HomePosts/>
+    </>
   )
 }
