@@ -24,15 +24,16 @@ export default function HomePosts() {
   useEffect(() =>{
     getAllPosts();
   }, [])
-  
+
   return (
     <>
-    <div className="my-8">
-      {allPosts.map((post: PostType) => (
-        <Post post={post} key={post.id} />
-      )
-      )}
-    </div> 
+      <div className="my-8">
+        {allPosts.map((post: PostType) => (
+          <Post post={post} key={post.id} />
+          )
+        )}
+      </div> 
     </>
   )
 }
+
