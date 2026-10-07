@@ -1,9 +1,9 @@
-import HomePosts from './HomeComponents/HomePosts';
+import HomePostsWithTanStack from './HomeComponents/HomePostsWithTanStack';
 
 export default function Home() {
   return (
     <>
-      <HomePosts/>
+      <HomePostsWithTanStack/>
     </>
   )
 }
