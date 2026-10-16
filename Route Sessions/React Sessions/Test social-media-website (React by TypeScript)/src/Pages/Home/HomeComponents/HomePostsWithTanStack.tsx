@@ -3,7 +3,9 @@ import Post from '../../../Components/Posts/Post';
 import axios from 'axios';
 import { type PostType } from '../../../Types/Posts.type';
 import LoadingSpinner from './../../../Components/Loading/LoadingSpinner';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query'; 
+
+//concept ano yegeb al data al 2adema wa ye3rdha l user wa ye3ml fetching tany dah lma user yerg3 l home m4 lma yeseboo
 
 // tol ma isFetching is true, fa by7sl request gded 34an ye3rf feh data gdeda gat mn server wla l2 
 // user lma yegy mn Profile l Home masln fah keda isFetching b true lkn isLoading b false , yeb2a howa hay3ml request gded ye4of feh data gdeda wla l2
