@@ -6,7 +6,7 @@ import Comment from './../Comment/Comment';
 import { Link } from "react-router-dom";
 
 export default function Post({post} : {post:PostType }) {
-  const {body, image, user, createdAt, topComment} = post
+  const {body, image, user, createdAt, topComment, id} = post
   const {name, photo} = user
 
 
@@ -26,7 +26,7 @@ export default function Post({post} : {post:PostType }) {
         </div>
         <div className="py-3 px-6  flex justify-between bg-slate-200 rounded-sm">
           <div className="font-bold cursor-pointer flex gap-2 items-center">Like <AiFillLike/></div>
-          <Link to="/postdetails">
+          <Link to={`/postdetails/${id}`}>
           <div className="font-bold cursor-pointer flex gap-2 items-center">Comment <FaCommentAlt/></div>
           </Link>
           <div className="font-bold cursor-pointer flex gap-2 items-center">Share <FaShare/></div>
@@ -39,5 +39,6 @@ export default function Post({post} : {post:PostType }) {
     </>
   )
 }
+
 
 
