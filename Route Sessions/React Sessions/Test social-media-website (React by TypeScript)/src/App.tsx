@@ -23,7 +23,7 @@ function App() {
         {index :true, element: <BeforeLoggingProtectedRoute> <Home/> </BeforeLoggingProtectedRoute>},
         {path: "home", element: <BeforeLoggingProtectedRoute> <Home/> </BeforeLoggingProtectedRoute>},
         {path: "profile", element: <BeforeLoggingProtectedRoute> <Profile/> </BeforeLoggingProtectedRoute>},
-        {path: "postdetails", element: <BeforeLoggingProtectedRoute> <PostDetails/> </BeforeLoggingProtectedRoute>},
+        {path: "postdetails/:id", element: <BeforeLoggingProtectedRoute> <PostDetails/> </BeforeLoggingProtectedRoute>},
         {path: "login", element: <AfterLoggingProtectedRoute> <Login/> </AfterLoggingProtectedRoute> },
         {path:"register", element: <AfterLoggingProtectedRoute> <Register/> </AfterLoggingProtectedRoute> }
       ]
