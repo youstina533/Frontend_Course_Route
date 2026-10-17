@@ -1,4 +1,5 @@
-import Layout from './Layout/Layout';
+
+ import Layout from './Layout/Layout';
 import Login from './Pages/Login/Login';
 import Register from './Pages/Register/Register';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
@@ -8,6 +9,8 @@ import AuthContextProvider from './Context/AuthContextValue';
 import BeforeLoggingProtectedRoute from "./ProtectedRoute/BeforeLoggingProtectedRoute"
 import AfterLoggingProtectedRoute from './ProtectedRoute/AfterLoggingProtectedRoute';
 import {QueryClientProvider, QueryClient} from "@tanstack/react-query"
+import PostDetails from './Pages/PostDetails/PostDetails';
+
 
 const query = new QueryClient();
 
@@ -20,6 +23,7 @@ function App() {
         {index :true, element: <BeforeLoggingProtectedRoute> <Home/> </BeforeLoggingProtectedRoute>},
         {path: "home", element: <BeforeLoggingProtectedRoute> <Home/> </BeforeLoggingProtectedRoute>},
         {path: "profile", element: <BeforeLoggingProtectedRoute> <Profile/> </BeforeLoggingProtectedRoute>},
+        {path: "postdetails", element: <BeforeLoggingProtectedRoute> <PostDetails/> </BeforeLoggingProtectedRoute>},
         {path: "login", element: <AfterLoggingProtectedRoute> <Login/> </AfterLoggingProtectedRoute> },
         {path:"register", element: <AfterLoggingProtectedRoute> <Register/> </AfterLoggingProtectedRoute> }
       ]
