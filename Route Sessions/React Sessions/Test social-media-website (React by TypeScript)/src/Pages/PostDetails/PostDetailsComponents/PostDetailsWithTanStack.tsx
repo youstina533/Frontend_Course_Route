@@ -17,7 +17,7 @@ export default function PostDetailsWithTanStack() {
     }
 
     const {data, isLoading, error, isError} = useQuery({
-        queryKey: ["getPostDetails"],
+        queryKey: ["getPostDetails", id],
         queryFn: getPostDetails
       })
 
