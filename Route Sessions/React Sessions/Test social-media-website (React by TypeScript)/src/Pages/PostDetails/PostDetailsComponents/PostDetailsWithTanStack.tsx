@@ -1,7 +1,39 @@
+import axios from "axios"
+import { useQuery } from "@tanstack/react-query"
+import LoadingSpinner from './../../../Components/Loading/LoadingSpinner';
+import { useParams } from "react-router-dom";
+
+
+
 export default function PostDetailsWithTanStack() {
-  return (
-    <div>
+    const {id} = useParams();
+
+    function getPostDetails(){
+      return axios.get(`https://route-posts.routemisr.com/posts/${id}`,{
+        headers:{
+            Authorization : `Bearer ${localStorage.getItem("userToken")}`
+        }
+      })
+    }
+
+    const {data, isLoading, error, isError} = useQuery({
+        queryKey: ["getPostDetails"],
+        queryFn: getPostDetails
+      })
+
+    console.log(data?.data.data.post);
       
-    </div>
+      if(isLoading){
+        return <LoadingSpinner/>
+      }
+      
+      if(isError){
+        return <h1 className="font-extrabold my-30 mx-auto">{error?.message}</h1>
+      }
+
+  return (
+    <>
+      
+    </>
   )
 }
