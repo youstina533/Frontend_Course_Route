@@ -21,8 +21,8 @@ export default function Post({post} : {post:PostType }) {
           </div>
         </div>
         <div>
-          <p className="px-6 py-3 text-lg ">{body}</p>
-          <img src={image} className="w-full" alt="post-image"/>
+          {body && <p className="px-6 py-3 text-lg ">{body}</p> }
+          {image && <img src={image} className="w-full" alt="post-image"/>}
         </div>
         <div className="py-3 px-6  flex justify-between bg-slate-200 rounded-sm">
           <div className="font-bold cursor-pointer flex gap-2 items-center">Like <AiFillLike/></div>
