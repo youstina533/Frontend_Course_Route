@@ -2,7 +2,7 @@ import axios from "axios"
 import { useQuery } from "@tanstack/react-query"
 import LoadingSpinner from './../../../Components/Loading/LoadingSpinner';
 import { useParams } from "react-router-dom";
-
+import Post from './../../../Components/Posts/Post';
 
 
 export default function PostDetailsWithTanStack() {
@@ -33,7 +33,7 @@ export default function PostDetailsWithTanStack() {
 
   return (
     <>
-      
+      <Post post={data?.data.data.post}/>
     </>
   )
 }
