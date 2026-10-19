@@ -1,14 +1,32 @@
- import { AiFillLike } from "react-icons/ai";
+import { AiFillLike } from "react-icons/ai";
 import { FaShare } from "react-icons/fa";
 import { FaCommentAlt } from "react-icons/fa";
 import type { PostType } from "../../Types/Posts.type";
 import Comment from './../Comment/Comment';
 import { Link } from "react-router-dom";
+import axios  from 'axios';
+import { useQuery } from '@tanstack/react-query';
+import type { CommentType } from "../../Types/Comment.type";
 
-export default function Post({post} : {post:PostType }) {
+
+export default function Post({post, isPostDetails = false} : {post:PostType, isPostDetails:boolean }) {
   const {body, image, user, createdAt, topComment, _id} = post
   const {name, photo} = user
 
+  function getPostComments(){
+    return axios.get(`https://route-posts.routemisr.com/posts/${_id}/comments?page=1&limit=10`,{
+     headers:{ Authorization: `Bearer ${localStorage.getItem("userToken")}`}
+    }
+    )
+  }
+
+  const {data} = useQuery({
+    queryKey: ["getPostComments", _id],
+    queryFn : getPostComments,
+    enabled: isPostDetails
+  })
+
+  console.log(data?.data.data.comments);
 
   return (
     <>
@@ -32,14 +50,22 @@ export default function Post({post} : {post:PostType }) {
           <div className="font-bold cursor-pointer flex gap-2 items-center">Share <FaShare/></div>
         </div>
 
-        {topComment && 
-          <Comment topComment={topComment}/>
+
+        {isPostDetails ?
+        <>
+        <Comment comment={topComment}/>
+        {data?.data.data.comments &&
+        data.data.data.comments.map((comment: CommentType) => (
+          <Comment comment={comment} key ={comment._id}/>
+        ))}
+        </> : 
+         <Comment comment={topComment}/>
         }
+       
       </div>
     </>
   )
 }
-
 
 
 
