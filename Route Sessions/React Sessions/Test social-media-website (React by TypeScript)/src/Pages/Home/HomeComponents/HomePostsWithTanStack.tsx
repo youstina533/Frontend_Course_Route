@@ -1,9 +1,8 @@
-
 import Post from '../../../Components/Posts/Post';
 import axios from 'axios';
 import { type PostType } from '../../../Types/Posts.type';
 import LoadingSpinner from './../../../Components/Loading/LoadingSpinner';
-import { useQuery } from '@tanstack/react-query'; 
+import { useQuery } from '@tanstack/react-query';
 
 //concept ano yegeb al data al 2adema wa ye3rdha l user wa ye3ml fetching tany dah lma user yerg3 l home m4 lma yeseboo
 
@@ -34,7 +33,7 @@ import { useQuery } from '@tanstack/react-query';
 export default function HomePostsWithTanStack() {
   
     function getAllPosts(){
-      return axios.get(`https://route-posts.routemisr.com/posts`, {
+      return axios.get(`https://route-posts.routemisr.com/posts?sort=createdAt`, {
         headers:{
           Authorization: `Bearer ${localStorage.getItem("userToken")}`,
         }
@@ -58,7 +57,7 @@ export default function HomePostsWithTanStack() {
     <>
       <div className="my-29">
         {data?.data.data.posts.map((post: PostType) => (
-          <Post post={post} key={post.id} />
+          <Post post={post} key={post.id} isPostDetails={false} />
           )
         )}
       </div> 
