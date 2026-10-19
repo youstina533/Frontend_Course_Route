@@ -32,10 +32,11 @@ export default function PostDetailsWithTanStack() {
       }
 
   return (
-   <>
+    <>
       <div className="mt-30">
-         {data?.data.data.post && <Post post={data?.data.data.post}/>} 
+       {data?.data.data.post && <Post post={data?.data.data.post} isPostDetails={true}/>} 
       </div>
-   </>
+    </>
   )
 }
+
