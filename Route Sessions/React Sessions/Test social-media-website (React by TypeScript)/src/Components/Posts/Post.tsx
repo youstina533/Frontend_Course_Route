@@ -23,7 +23,7 @@ export default function Post({post, isPostDetails = false} : {post:PostType, isP
   const {data} = useQuery({
     queryKey: ["getPostComments", _id],
     queryFn : getPostComments,
-    enabled: isPostDetails
+    enabled: isPostDetails //34an lw ana feh home may3ml4 fetch l data (all comments) asln al data hatb2a undefined haygebha lw ana feh Post details
   })
 
   console.log(data?.data.data.comments);
