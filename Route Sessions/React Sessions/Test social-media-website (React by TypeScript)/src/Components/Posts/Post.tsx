@@ -20,13 +20,13 @@ export default function Post({post, isPostDetails = false} : {post:PostType, isP
     )
   }
 
-  const {data} = useQuery({
+  const {data:commentsData} = useQuery({
     queryKey: ["getPostComments", _id],
     queryFn : getPostComments,
     enabled: isPostDetails //34an lw ana feh home may3ml4 fetch l data (all comments) asln al data hatb2a undefined haygebha lw ana feh Post details
   })
 
-  console.log(data?.data.data.comments);
+  console.log(commentsData?.data.data.comments);
 
   return (
     <>
@@ -54,8 +54,8 @@ export default function Post({post, isPostDetails = false} : {post:PostType, isP
         {isPostDetails ?
         <>
         <Comment comment={topComment}/>
-        {data?.data.data.comments &&
-        data.data.data.comments.map((comment: CommentType) => (
+        {commentsData?.data.data.comments &&
+        commentsData.data.data.comments.map((comment: CommentType) => (
           <Comment comment={comment} key ={comment._id}/>
         ))}
         </> : 
@@ -66,6 +66,3 @@ export default function Post({post, isPostDetails = false} : {post:PostType, isP
     </>
   )
 }
-
-
-
