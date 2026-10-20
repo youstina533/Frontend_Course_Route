@@ -67,7 +67,7 @@ export default function LoginFormReactHookFormAndZod() {
   
     return (
       <>
-        <main className="mt-30 bg-white p-5 rounded-4xl shadow-xl w-[50%] mx-auto py-10">
+        <main className="mt-30 bg-white p-5 rounded-4xl shadow-xl xl:w-[50%] mx-auto py-10">
          <h1 className="text-6xl text-center font-bold">Login Now</h1>
          {apiError&&(
             <p className="bg-red-500 text-hite font-bold text-center text-xl">
