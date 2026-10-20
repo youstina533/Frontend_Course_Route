@@ -27,7 +27,7 @@ export default function Navbar() {
         <div className="max-w-7xl flex flex-wrap items-center justify-between mx-auto p-4">
           <Link to="/" className="flex items-center space-x-3 rtl:space-x-reverse">
             {/* <img src="" className="h-7" alt="Flowbite Logo" /> */}
-            <span className="self-center text-heading font-semibold whitespace-nowrap text-2xl text-blue-700">Facebook</span>
+            <span className="self-center text-heading font-semibold whitespace-nowrap text-2xl text-blue-700">AllTimeNews</span>
           </Link>
           <div className="hidden md:flex items-center space-x-8">
             {userToken ? 
