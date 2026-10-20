@@ -44,6 +44,8 @@ export default function HomePostsWithTanStack() {
     queryKey: ["getAllPosts"],
     queryFn: getAllPosts
   })
+
+  console.log(data?.data.data.posts);
   
   if(isLoading){
     return <LoadingSpinner/>
