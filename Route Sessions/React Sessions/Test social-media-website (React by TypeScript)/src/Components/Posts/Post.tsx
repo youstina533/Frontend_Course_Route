@@ -30,7 +30,7 @@ export default function Post({post, isPostDetails = false} : {post:PostType, isP
 
   return (
     <>
-      <div className="mx-auto w-180 bg-white rounded-3xl my-6 pb-9 shadow-xl">
+      <div className="mx-auto xl:w-[50%] bg-white rounded-3xl my-6 pb-9 shadow-xl">
         <div className="flex gap-4 itesm-center p-6">
           <img src={photo} className="w-15 h-15 rounded-full border-2 border-white " alt="post-owner-image"/>
           <div>
