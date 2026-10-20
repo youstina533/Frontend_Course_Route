@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import axios  from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import type { CommentType } from "../../Types/Comment.type";
+import CommentCreation from './../CommentCreation/CommentCreation';
 
 
 export default function Post({post, isPostDetails = false} : {post:PostType, isPostDetails:boolean }) {
@@ -55,7 +56,7 @@ export default function Post({post, isPostDetails = false} : {post:PostType, isP
           </Link>
           <div className="font-bold cursor-pointer flex gap-2 items-center">Share <FaShare/></div>
         </div>
-
+        <CommentCreation/>
 
         {isPostDetails ?
         <>
