@@ -13,4 +13,5 @@ export type CommentType = {
   parentComment: string | null;
   likes: string[];
   createdAt: string;
+  image: string,
 };
