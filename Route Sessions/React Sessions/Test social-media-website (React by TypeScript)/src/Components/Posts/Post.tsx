@@ -10,7 +10,7 @@ import type { CommentType } from "../../Types/Comment.type";
 import CommentCreation from './../CommentCreation/CommentCreation';
 
 
-export default function Post({post, isPostDetails = false} : {post:PostType, isPostDetails:boolean }) {
+export default function Post({post, isPostDetails = false} : {post:PostType, isPostDetails?:boolean }) {
   const {body, image, user, createdAt, topComment, _id, commentsCount, likesCount, sharesCount} = post
   const {name, photo} = user
 
@@ -56,7 +56,7 @@ export default function Post({post, isPostDetails = false} : {post:PostType, isP
           </Link>
           <div className="font-bold cursor-pointer flex gap-2 items-center">Share <FaShare/></div>
         </div>
-        <CommentCreation/>
+        <CommentCreation postId={ _id} queryKey={isPostDetails ? ["getPostComments", _id]  : ["getAllPosts"] }/>
 
         {isPostDetails ?
         <>
