@@ -1,9 +1,10 @@
 import { FiShare } from "react-icons/fi";
 import { useForm } from 'react-hook-form';
+import  axios  from 'axios';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 
-
-export default function CommentCreation() {
+export default function CommentCreation({postId, queryKey}: {postId : string, queryKey: string[] }) {
 
     const commentForm = useForm({
         defaultValues:{
@@ -14,18 +15,41 @@ export default function CommentCreation() {
 
     const CommentformData =  new FormData();
 
-    const {register, handleSubmit} = commentForm;
+    const {register, handleSubmit, reset} = commentForm;
+
+    const query = useQueryClient();
+
+    function createComment(){
+        return axios.post(`https://route-posts.routemisr.com/posts/${postId}/comments`, CommentformData ,{
+            headers :{ Authorization: `Bearer ${localStorage.getItem("userToken")}` }
+        });
+    }
+
+    const {isPending, mutate} = useMutation({
+        mutationFn : createComment,
+        onSuccess(){
+        reset();
+        query.invalidateQueries({queryKey: queryKey })
+        },
+        onError(){
+
+        },
+        onSettled(){
+
+        }
+    })
 
     function handleCreateComment(formResponseObject: {content: string, image: string}){ //formResponseObject dah object aly useForm btgam3o 
         if(!formResponseObject.content && !formResponseObject.image){
             return
         }
         if(formResponseObject.content){
-            CommentformData.append("conent",formResponseObject.content);
+            CommentformData.append("content",formResponseObject.content);
         }
         if(formResponseObject.image){
            CommentformData.append("image",formResponseObject.image[0]); //ana keda bab3t al sora m4 al path beta3ha //lw feh image hayb2a array 34an keda ba7t al index 
         }
+        mutate()
     }
 
   return (  
@@ -42,10 +66,13 @@ export default function CommentCreation() {
                       {...register("image")}
                     />
                 </label>
-                <button type="submit" className=" cursor-pointer absolute inset-e-1.5 me-3 bottom-1.5 text-white bg-[#1C398E]  hover:bg-[#152967] box-border border border-transparent focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-2xl text-xs px-3 py-1.5 focus:outline-none">Submit</button>
+                <button disabled={isPending} type="submit" className=" disabled:bg-slate-700 disabled:cursor-not-allowed cursor-pointer absolute inset-e-1.5 me-3 bottom-1.5 text-white bg-[#1C398E]  hover:bg-[#152967] box-border border border-transparent focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-2xl text-xs px-3 py-1.5 focus:outline-none">
+                   {isPending ? "Loading" : "Submit" } 
+                </button>
             </div>
         </form>
 
     </>
   )
 }
+
