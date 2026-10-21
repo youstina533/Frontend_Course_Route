@@ -48,14 +48,6 @@ export default function HomePostsWithTanStack() {
 
   console.log(data?.data.data.posts);
 
-   if(isLoading){
-    return <LoadingSpinner/>
-  }
-  
-  if(isError){
-    return <h1 className="font-extrabold my-30 mx-auto">{error?.message}</h1>
-  }
-
   function getUserData(){
       return axios.get(`https://route-posts.routemisr.com/users/profile-data`, {
         headers:{
@@ -68,6 +60,14 @@ export default function HomePostsWithTanStack() {
     queryKey: ["getUserData"],
     queryFn: getUserData
   })
+
+    if(isLoading){
+    return <LoadingSpinner/>
+  }
+  
+  if(isError){
+    return <h1 className="font-extrabold my-30 mx-auto">{error?.message}</h1>
+  }
   
   return (
     <>
