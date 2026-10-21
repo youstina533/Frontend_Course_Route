@@ -3,6 +3,7 @@ import axios from 'axios';
 import { type PostType } from '../../../Types/Posts.type';
 import LoadingSpinner from './../../../Components/Loading/LoadingSpinner';
 import { useQuery } from '@tanstack/react-query';
+import PostCreation from './../../../Components/PostCreation/PostCreation';
 
 //concept ano yegeb al data al 2adema wa ye3rdha l user wa ye3ml fetching tany dah lma user yerg3 l home m4 lma yeseboo
 
@@ -58,6 +59,7 @@ export default function HomePostsWithTanStack() {
   return (
     <>
       <div className="my-29">
+        <PostCreation/>
         {data?.data.data.posts.map((post: PostType) => (
           <Post post={post} key={post.id} isPostDetails={false} />
           )
