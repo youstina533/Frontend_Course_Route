@@ -21,7 +21,7 @@ export default function ProfileContent() {
 
   return (
     <>
-      <PostCreation userImage={}/>
+      <PostCreation userImage={data?.data.data.user.photo}/>
     </>
   )
 }
