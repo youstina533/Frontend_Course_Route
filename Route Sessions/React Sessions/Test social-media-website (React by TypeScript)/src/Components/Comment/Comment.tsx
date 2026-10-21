@@ -13,6 +13,7 @@ export default function Comment({comment} : {comment : CommentType}) {
                     <p className="font-bold ">{comment?.commentCreator.name}</p>
                     <p className="text-sm text-slate-500 ">{comment?.createdAt}</p>
                     <p className="comment-content pt-3">{comment?.content}</p>
+                   {comment?.image ? <img src={comment?.image} alt={comment?.content}  /> : ""} 
                     <div className="mt-4 mb-1 flex gap-5">
                       <button className="text-xl cursor-pointer"><AiOutlineLike/></button>
                       <button className="cursor-pointer text-sm"><FaRegComment className="inline-block text-xl me-2"/>make a reply</button>
