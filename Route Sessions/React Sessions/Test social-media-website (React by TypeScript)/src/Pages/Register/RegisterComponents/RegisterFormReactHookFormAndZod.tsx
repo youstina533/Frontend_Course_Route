@@ -7,6 +7,7 @@ import axios from "axios"
 import { Link, useNavigate} from "react-router-dom";
 import { useState } from "react";
 import toast from 'react-hot-toast';
+import {Helmet} from "react-helmet"
 
 // al interface wa al zod object kona bn3mlhm hena 2abl export register() bs wadenahm al schema  ///////
 
@@ -74,6 +75,9 @@ export default function RegisterFormReactHookFormAndZod() {
   
     return (
       <>
+        <Helmet>
+            <title>Register</title>
+        </Helmet>
         <main className="mt-30 bg-white p-5 rounded-4xl shadow-xl xl:w-[50%] mx-auto py-10">
          <h1 className="text-6xl text-center font-bold">Register Now</h1>
          <form onSubmit={handleSubmit(handleRegister)} className="max-w-md mx-auto mt-10">
