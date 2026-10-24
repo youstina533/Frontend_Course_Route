@@ -60,7 +60,6 @@ export default function Post({post, isPostDetails = false} : {post:PostType, isP
 
         {isPostDetails ?
         <>
-        <Comment comment={topComment}/>
         {commentsData?.data.data.comments &&
         commentsData.data.data.comments.map((comment: CommentType) => (
           <Comment comment={comment} key ={comment._id}/>
