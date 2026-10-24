@@ -72,3 +72,4 @@ export default function Post({post, isPostDetails = false} : {post:PostType, isP
     </>
   )
 }
+
