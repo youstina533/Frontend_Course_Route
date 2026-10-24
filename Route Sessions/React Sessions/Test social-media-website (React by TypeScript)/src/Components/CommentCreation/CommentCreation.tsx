@@ -32,10 +32,8 @@ export default function CommentCreation({postId, queryKey}: {postId : string, qu
         query.invalidateQueries({queryKey: queryKey })
         },
         onError(){
-
         },
         onSettled(){
-
         }
     })
 
@@ -44,7 +42,7 @@ export default function CommentCreation({postId, queryKey}: {postId : string, qu
             return
         }
         if(formResponseObject.content){
-            CommentformData.append("content",formResponseObject.content);
+            CommentformData.append("content",formResponseObject.content); //content deh nafs al property aly 3ayzha al backend
         }
         if(formResponseObject.image){
            CommentformData.append("image",formResponseObject.image[0]); //ana keda bab3t al sora m4 al path beta3ha //lw feh image hayb2a array 34an keda ba7t al index 
@@ -75,4 +73,5 @@ export default function CommentCreation({postId, queryKey}: {postId : string, qu
     </>
   )
 }
+
 
