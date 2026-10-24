@@ -4,6 +4,7 @@ import { type PostType } from '../../../Types/Posts.type';
 import LoadingSpinner from './../../../Components/Loading/LoadingSpinner';
 import { useQuery } from '@tanstack/react-query';
 import PostCreation from './../../../Components/PostCreation/PostCreation';
+import {Helmet} from "react-helmet"
 
 //concept ano yegeb al data al 2adema wa ye3rdha l user wa ye3ml fetching tany dah lma user yerg3 l home m4 lma yeseboo
 
@@ -72,6 +73,9 @@ export default function HomePostsWithTanStack() {
   
   return (
     <>
+      <Helmet>
+        <title>Home</title>
+      </Helmet>
       <div className="my-29">
         <PostCreation userImage={userData?.data.data.user.photo} />
         {data?.data.data.posts.map((post: PostType) => (
