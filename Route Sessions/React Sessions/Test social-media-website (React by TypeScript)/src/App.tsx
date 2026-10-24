@@ -10,11 +10,14 @@ import AfterLoggingProtectedRoute from './ProtectedRoute/AfterLoggingProtectedRo
 import {QueryClientProvider, QueryClient} from "@tanstack/react-query"
 import PostDetails from './Pages/PostDetails/PostDetails';
 import { Toaster } from 'react-hot-toast';
+import {useNetworkState} from  'react-use'
+import Offline from './Components/Offline/Offline';
+
+
 
 const query = new QueryClient();
 
-function App() {
-  const routers = createBrowserRouter([
+const routers = createBrowserRouter([
     {
       path: "",
       element: <Layout/>,
@@ -28,11 +31,17 @@ function App() {
       ]
     }
   ])
+
+function App() {
+
+  const {online} = useNetworkState();
+
   return (
     <>
+    {!online && <Offline/>}
       <QueryClientProvider client = {query}>
         <AuthContextProvider>
-         <Toaster/>
+          <Toaster/>
           <RouterProvider router={routers}></RouterProvider>
         </AuthContextProvider>
       </QueryClientProvider>
