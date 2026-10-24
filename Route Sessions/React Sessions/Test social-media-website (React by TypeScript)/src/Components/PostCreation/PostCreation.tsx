@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { FaSpinner } from "react-icons/fa6";
 import { type ChangeEvent } from "react";
+import toast from 'react-hot-toast';
 
 
 export default function PostCreation({userImage}:{userImage?:string}) {
@@ -45,6 +46,10 @@ export default function PostCreation({userImage}:{userImage?:string}) {
    console.log(res);
    query.invalidateQueries({queryKey: ["getAllPosts"]})
    clearInput();
+   toast.success(res.data.message, { style: { zIndex: 999 } });
+  },
+  onError(err){
+    toast.error(err.message);
   }
 })
 
