@@ -8,11 +8,17 @@ import axios  from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import type { CommentType } from "../../Types/Comment.type";
 import CommentCreation from './../CommentCreation/CommentCreation';
+import { BsThreeDots } from "react-icons/bs";
+import { FaPencil } from "react-icons/fa6";
+import { FaTrash } from "react-icons/fa";
+import { useState } from 'react';
 
 
 export default function Post({post, isPostDetails = false} : {post:PostType, isPostDetails?:boolean }) {
   const {body, image, user, createdAt, topComment, _id, commentsCount, likesCount, sharesCount} = post
   const {name, photo} = user
+  const [isOpen, setisOpen] = useState(false)
+  
 
   function getPostComments(){
     return axios.get(`https://route-posts.routemisr.com/posts/${_id}/comments?page=1&limit=50`,{
@@ -32,11 +38,25 @@ export default function Post({post, isPostDetails = false} : {post:PostType, isP
   return (
     <>
       <div className="mx-auto xl:w-[50%] bg-white rounded-3xl my-6 pb-9 shadow-xl">
-        <div className="flex gap-4 itesm-center p-6">
-          <img src={photo} className="w-15 h-15 rounded-full border-2 border-white " alt="post-owner-image"/>
-          <div>
-            <p className="font-bold text-xl ">{name}</p>
-            <p className="text-sm text-slate-500 ">{createdAt}</p>
+        <div className="flex justify-between itesm-center relative">
+          <div className="flex gap-4 itesm-center p-6">
+            <img src={photo} className="w-15 h-15 rounded-full border-2 border-white " alt="post-owner-image"/>
+            <div>
+              <p className="font-bold text-xl ">{name}</p>
+              <p className="text-sm text-slate-500 ">{createdAt}</p>
+            </div>
+          </div>
+          <div className="relative">
+            <button type="button" onClick={() => setisOpen(!isOpen)} className="cursor-pointer absolute inset-e-5 top-7">
+              <BsThreeDots className="text-2xl"/>
+            </button>
+            {isOpen &&
+            <>
+              <ul className="bg-slate-300 rounded-2xl text-slate-800 absolute -inset-e-7 top-14">
+                <li className="flex gap-7 p-3 hover:bg-slate-700 rounded-t-2xl hover:text-white">Edit <FaPencil/></li> 
+                <li className="flex gap-3 p-3 hover:bg-slate-700 rounded-b-2xl hover:text-white">Delete <FaTrash/> </li>
+              </ul>
+            </>}
           </div>
         </div>
         <div>
@@ -72,4 +92,3 @@ export default function Post({post, isPostDetails = false} : {post:PostType, isP
     </>
   )
 }
-
