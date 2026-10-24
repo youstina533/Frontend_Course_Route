@@ -2,6 +2,7 @@ import { FiShare } from "react-icons/fi";
 import { useForm } from 'react-hook-form';
 import  axios  from 'axios';
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import toast from 'react-hot-toast';
 
 
 export default function CommentCreation({postId, queryKey}: {postId : string, queryKey: string[] }) {
@@ -27,13 +28,15 @@ export default function CommentCreation({postId, queryKey}: {postId : string, qu
 
     const {isPending, mutate} = useMutation({
         mutationFn : createComment,
-        onSuccess(){
-        reset();
-        query.invalidateQueries({queryKey: queryKey })
+        onSuccess: (res) =>{
+            reset();
+            query.invalidateQueries({queryKey: queryKey })
+            toast.success(res.data.message, { style: { zIndex: 999 } });
         },
-        onError(){
+        onError:(err) => {
+            toast.error(err.message);
         },
-        onSettled(){
+        onSettled:() => {
         }
     })
 
