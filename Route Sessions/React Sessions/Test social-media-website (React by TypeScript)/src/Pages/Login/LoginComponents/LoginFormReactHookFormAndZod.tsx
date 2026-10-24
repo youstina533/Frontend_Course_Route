@@ -3,8 +3,9 @@ import {zodResolver} from "@hookform/resolvers/zod"
 import { loginSchema, type loginSchemaType } from './../../../Schemas/auth.schema';
 import axios from "axios"
 import { Link, useNavigate} from "react-router-dom";
-import { useState, useState} from "react";
+import { useContext, useState } from "react";
 import {AuthContext} from "../../../Context/AuthContextValue"
+import toast from 'react-hot-toast';
 
 // al interface wa al zod object kona bn3mlhm hena 2abl export login() bs wadenahm al schema  ///////
 
@@ -51,17 +52,17 @@ export default function LoginFormReactHookFormAndZod() {
         axios.post(`https://route-posts.routemisr.com/users/signin`, loginrData) // 34an a3ml post l API wa ab3t al data aly gaya mn al form
         .then((response) =>{
            if(response.data.success){
-                localStorage.setItem("userToken", response.data.data.token); // 34an a7fz al token aly gay mn al API feh localStorage 34an a3ml redirect l al home page
-                setuserToken(response.data.data.token)
-                alert("Login successful");
-                navigate("/");
+            localStorage.setItem("userToken", response.data.data.token); // 34an a7fz al token aly gay mn al API feh localStorage 34an a3ml redirect l al home page
+            setuserToken(response.data.data.token)
+            toast.success("Login Successfully", { style: { zIndex: 999 } });
+            navigate("/");
            }
         })
         .catch((error)=>{
-                console.log(error.response.data.message);
-                setapiError(error.response.data.message) // 34an a3ml display l error aly gay mn al API
+            console.log(error.response.data.message);
+            toast.error(error.response.data.message , { style: { zIndex: 999 } });// 34an a3ml display l error aly gay mn al API
         }).finally(() =>{
-                setIsLoading(false) 
+            setIsLoading(false) 
         })
       }
   
@@ -69,11 +70,6 @@ export default function LoginFormReactHookFormAndZod() {
       <>
         <main className="mt-30 bg-white p-5 rounded-4xl shadow-xl xl:w-[50%] mx-auto py-10">
          <h1 className="text-6xl text-center font-bold">Login Now</h1>
-         {apiError&&(
-            <p className="bg-red-500 text-hite font-bold text-center text-xl">
-                {apiError}
-            </p>
-         )}
          <form onSubmit={handleSubmit(handlogin)} className="max-w-md mx-auto mt-10">
               <div className="relative z-0 w-full mb-5 group">
                   <input type="email"
@@ -112,7 +108,7 @@ export default function LoginFormReactHookFormAndZod() {
               <button 
                 disabled={isLoading}
                 type="submit" 
-                className="text-white bg-[#2a4ca1] disabled:bg-slate-900 disabled:text-white disabled:cursor-not-allowed block w-full rounded-xl hover:bg-[#19316e] box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">
+                className="text-white bg-[#2a4ca1] disabled:bg-slate-900 disabled:text-white disabled:cursor-not-allowed block w-full rounded-xl hover:bg-[#19316e] box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 mt-8 focus:outline-none">
                 {isLoading ? "Loading ..." : "Login"}
               </button>
              <div className="my-2 text-center text-xl text-blue-500 hover:text-blue-700 font-semibold hover:underline cursor:pointer">
