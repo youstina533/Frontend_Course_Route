@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query"
 import LoadingSpinner from './../../../Components/Loading/LoadingSpinner';
 import { useParams } from "react-router-dom";
 import Post from './../../../Components/Posts/Post';
-
+import {Helmet} from "react-helmet"
 
 export default function PostDetailsWithTanStack() {
     const {id} = useParams();
@@ -33,6 +33,9 @@ export default function PostDetailsWithTanStack() {
 
   return (
     <>
+     <Helmet>
+        <title>Post Details</title>
+      </Helmet>
       <div className="mt-30">
        {data?.data.data.post && <Post post={data?.data.data.post} isPostDetails={true}/>} 
       </div>
