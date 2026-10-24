@@ -1,5 +1,4 @@
-
- import Layout from './Layout/Layout';
+import Layout from './Layout/Layout';
 import Login from './Pages/Login/Login';
 import Register from './Pages/Register/Register';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
@@ -10,7 +9,7 @@ import BeforeLoggingProtectedRoute from "./ProtectedRoute/BeforeLoggingProtected
 import AfterLoggingProtectedRoute from './ProtectedRoute/AfterLoggingProtectedRoute';
 import {QueryClientProvider, QueryClient} from "@tanstack/react-query"
 import PostDetails from './Pages/PostDetails/PostDetails';
-
+import { Toaster } from 'react-hot-toast';
 
 const query = new QueryClient();
 
@@ -33,6 +32,7 @@ function App() {
     <>
       <QueryClientProvider client = {query}>
         <AuthContextProvider>
+         <Toaster/>
           <RouterProvider router={routers}></RouterProvider>
         </AuthContextProvider>
       </QueryClientProvider>
