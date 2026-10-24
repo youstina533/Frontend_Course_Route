@@ -6,6 +6,7 @@ import { registerSchema, type RegisterSchemaType } from './../../../Schemas/auth
 import axios from "axios"
 import { Link, useNavigate} from "react-router-dom";
 import { useState } from "react";
+import toast from 'react-hot-toast';
 
 // al interface wa al zod object kona bn3mlhm hena 2abl export register() bs wadenahm al schema  ///////
 
@@ -59,13 +60,13 @@ export default function RegisterFormReactHookFormAndZod() {
         axios.post(`https://route-posts.routemisr.com/users/signup`, registerData) // 34an a3ml post l API wa ab3t al data aly gaya mn al form
         .then((response) =>{
            if(response.data.success){
-            alert("Registeration successful");
+            toast.success("Register Successfully", { style: { zIndex: 999 } });
             navigate("/login");
            }
         })
         .catch((error)=>{
             console.log(error.response.data.message);
-            setapiError(error.response.data.message) // 34an a3ml display l error aly gay mn al API
+           toast.error(error.response.data.message) // 34an a3ml display l error aly gay mn al API
         }).finally(() =>{
             setIsLoading(false) 
         })
@@ -75,11 +76,6 @@ export default function RegisterFormReactHookFormAndZod() {
       <>
         <main className="mt-30 bg-white p-5 rounded-4xl shadow-xl xl:w-[50%] mx-auto py-10">
          <h1 className="text-6xl text-center font-bold">Register Now</h1>
-         {apiError&&(
-            <p className="bg-red-500 text-hite font-bold text-center text-xl">
-                {apiError}
-            </p>
-         )}
          <form onSubmit={handleSubmit(handleRegister)} className="max-w-md mx-auto mt-10">
               <div className="relative z-0 w-full mb-5 group">
                   <input type="text"
@@ -181,7 +177,7 @@ export default function RegisterFormReactHookFormAndZod() {
               <div className="items-center mb-4 inline-block">
                   <input id="female" 
                       {...register("gender")}
-                      value="female"
+                      value="female" 
                       type="radio"
                       className="w-4 h-4 text-neutral-primary border-default-medium bg-neutral-secondary-medium rounded-full checked:border-brand focus:ring-2 focus:outline-none focus:ring-brand-subtle border border-default appearance-none"/>
                   <label 
@@ -196,7 +192,7 @@ export default function RegisterFormReactHookFormAndZod() {
                       </p>
                    )}
               <button 
-                 disabled={isLoading}
+                disabled={isLoading}
                 type="submit" 
                 className="text-white bg-[#2a4ca1] disabled:bg-slate-900 disabled:text-white disabled:cursor-not-allowed block w-full rounded-xl hover:bg-[#19316e] box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">
                 {isLoading ? "Loading ..." : "Register"}
