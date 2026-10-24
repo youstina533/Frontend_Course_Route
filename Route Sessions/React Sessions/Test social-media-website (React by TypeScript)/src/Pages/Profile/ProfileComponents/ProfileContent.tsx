@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import PostCreation from '../../../Components/PostCreation/PostCreation';
-
+import {Helmet} from "react-helmet"
 
 export default function ProfileContent() {
  
@@ -21,6 +21,9 @@ export default function ProfileContent() {
 
   return (
     <>
+     <Helmet>
+          <title>Profile</title>
+      </Helmet>
       <PostCreation userImage={data?.data.data.user.photo}/>
     </>
   )
