@@ -34,7 +34,7 @@ import PostCreation from './../../../Components/PostCreation/PostCreation';
 export default function HomePostsWithTanStack() {
   
     function getAllPosts(){
-      return axios.get(`https://route-posts.routemisr.com/posts?sort=createdAt`, {
+      return axios.get(`https://route-posts.routemisr.com/posts?sort=-createdAt`, {
         headers:{
           Authorization: `Bearer ${localStorage.getItem("userToken")}`,
         }
@@ -45,10 +45,11 @@ export default function HomePostsWithTanStack() {
     queryKey: ["getAllPosts"],
     queryFn: getAllPosts
   })
-
+  console.log(data);
   console.log(data?.data.data.posts);
 
-  function getUserData(){
+  
+    function getUserData(){
       return axios.get(`https://route-posts.routemisr.com/users/profile-data`, {
         headers:{
           Authorization: `Bearer ${localStorage.getItem("userToken")}`,
@@ -60,8 +61,8 @@ export default function HomePostsWithTanStack() {
     queryKey: ["getUserData"],
     queryFn: getUserData
   })
-
-    if(isLoading){
+  
+  if(isLoading){
     return <LoadingSpinner/>
   }
   
@@ -72,7 +73,7 @@ export default function HomePostsWithTanStack() {
   return (
     <>
       <div className="my-29">
-         <PostCreation userImage={userData?.data.data.user.photo} />
+        <PostCreation userImage={userData?.data.data.user.photo} />
         {data?.data.data.posts.map((post: PostType) => (
           <Post post={post} key={post.id} isPostDetails={false} />
           )
