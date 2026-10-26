@@ -3,9 +3,9 @@ import { FaShare } from "react-icons/fa";
 import { FaCommentAlt } from "react-icons/fa";
 import type { PostType } from "../../Types/Posts.type";
 import Comment from './../Comment/Comment';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios  from 'axios';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import type { CommentType } from "../../Types/Comment.type";
 import CommentCreation from './../CommentCreation/CommentCreation';
 import { BsThreeDots } from "react-icons/bs";
@@ -13,10 +13,15 @@ import { FaPencil } from "react-icons/fa6";
 import { FaTrash } from "react-icons/fa";
 import { useState, useContext } from 'react';
 import { AuthContext } from './../../Context/AuthContextValue';
+import { toast } from 'react-hot-toast';
+import { useQueryClient } from '@tanstack/react-query';
+import { FaSpinner } from "react-icons/fa";
 
 
 
-export default function Post({post, isPostDetails = false} : {post:PostType, isPostDetails?:boolean }) {
+
+
+export default function Post({post, isPostDetails = false, queryKey} : {post:PostType, isPostDetails?:boolean, queryKey:string[] }) {
   const {body, image, user, createdAt, topComment, _id, commentsCount, likesCount, sharesCount} = post
   const {name, photo, _id:postMakerId} = user
   const [isOpen, setisOpen] = useState(false);
@@ -38,6 +43,30 @@ export default function Post({post, isPostDetails = false} : {post:PostType, isP
 
   console.log(commentsData?.data.data.comments);
 
+  function handleDeletePost(){
+   return axios.delete(`https://route-posts.routemisr.com/posts/${_id}`,{
+    headers: {Authorization: `Bearer ${localStorage.getItem("userToken")}`}
+   })
+  }
+
+  const query = useQueryClient();
+  const navigate = useNavigate();
+
+  const {mutate, isPending} = useMutation({
+    mutationFn: handleDeletePost,
+    onSuccess: (res)=>{
+     toast.success(res.data.message);
+     query.invalidateQueries({queryKey: queryKey});
+     if(isPostDetails === true ){
+        navigate("/home");
+     }
+    },
+    onError: (error)=>{
+     toast.error(error.message);
+    }
+  })
+ 
+
   return (
     <>
       <div className="mx-auto xl:w-[50%] bg-white rounded-3xl my-6 pb-9 shadow-xl">
@@ -58,7 +87,16 @@ export default function Post({post, isPostDetails = false} : {post:PostType, isP
               <>
                 <ul className="bg-slate-300 rounded-2xl text-slate-800 absolute -inset-e-7 top-14">
                   <li className="flex gap-7 p-3 hover:bg-slate-700 rounded-t-2xl hover:text-white cursor-pointer">Edit <FaPencil/></li> 
-                  <li className="flex gap-3 p-3 hover:bg-slate-700 rounded-b-2xl hover:text-white cursor-pointer">Delete <FaTrash/> </li>
+                  <li>
+                    <button onClick={()=>mutate()} disabled={isPending} className="flex disabled:cursor-not-allowed disabled:bg-slate-800 gap-3 p-3 hover:bg-slate-700 rounded-b-2xl hover:text-white cursor-pointer">
+                      {isPending ? 
+                        <> Pending <FaSpinner className="animate-spinner"/>
+                        </>
+                        : 
+                        <>Delete <FaTrash/>
+                        </> }
+                    </button>
+                    </li>
                 </ul>
               </>}
             </div>}
@@ -96,3 +134,4 @@ export default function Post({post, isPostDetails = false} : {post:PostType, isP
     </>
   )
 }
+
