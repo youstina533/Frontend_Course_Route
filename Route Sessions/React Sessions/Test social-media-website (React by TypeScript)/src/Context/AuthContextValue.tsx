@@ -1,16 +1,18 @@
-import { createContext, useState, type Dispatch, type SetStateAction, type ReactNode } from "react";
+import { createContext, useState, useEffect , type Dispatch, type SetStateAction, type ReactNode } from "react";
 // import {useEffect} from "react"
-
+import {jwtDecode} from "jwt-decode"
 
 type AuthContextType ={
-  userToken: string | null;
-  setuserToken : Dispatch<SetStateAction<string | null>>; // here 2 generic [<>] and Dispatch is type of functions , setStateAction is type for setState function
+  userToken: string | null,
+  setuserToken : Dispatch<SetStateAction<string | null>>, // here 2 generic [<>] and Dispatch is type of functions , setStateAction is type for setState function
+  userId: string,
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const AuthContext =  createContext<AuthContextType>({ // hena al craeteContext byb2a 3ayz ye3rf ana k context ha-provide eh, fah 3amlna generic 34an ne7ot feh type l al hagat aly howa a provide it [gwa value]
     userToken: null, // feh bedaya 5als
     setuserToken: () => {}, // keda 2olt ano no3o function
+    userId: ""
 });
 
 export default function AuthContextProvider({children} : {children: ReactNode }){
@@ -24,7 +26,17 @@ export default function AuthContextProvider({children} : {children: ReactNode })
     //     }
     // },[])
 
-    return <AuthContext.Provider value={{userToken,setuserToken}}>
+    const [userId, setuserId] = useState("");
+
+    useEffect(()=>{
+    const token = localStorage.getItem("userToken");
+    if (token) {
+      const { user }: { user: string } = jwtDecode(token);
+      setuserId(user);
+   }  
+   }, [userToken])
+
+    return <AuthContext.Provider value={{userToken,setuserToken, userId}}>
             {children}
          </AuthContext.Provider> 
 }
