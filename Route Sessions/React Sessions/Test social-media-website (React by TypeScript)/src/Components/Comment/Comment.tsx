@@ -1,3 +1,6 @@
+import { type CommentType } from "../../Types/Comment.type"
+import { AiOutlineLike } from "react-icons/ai";
+import { FaRegComment } from "react-icons/fa";
 import { TiArrowSortedDown } from "react-icons/ti";
 import { useState } from 'react';
 import axios from 'axios';
@@ -13,7 +16,7 @@ import { FaTrash } from "react-icons/fa";
 import { FaSpinner } from "react-icons/fa";
 
 
-export default function Comment({comment, postId, commentId, queryKey, loginUserId, commentMakerId, isPostDetails} : {comment : CommentType, postId:string, commentId:string, queryKey:string[], loginUserId:string, commentMakerId:string, isPostDetails:boolean}) {
+export default function Comment({comment, postId, commentId, queryKey, loginUserId, commentMakerId} : {comment : CommentType, postId:string, commentId:string, queryKey:string[], loginUserId:string, commentMakerId:string}) {
   const [isReplyShown, setisReplyDhown] = useState(false);
 
   function showReplies(){
@@ -110,7 +113,7 @@ export default function Comment({comment, postId, commentId, queryKey, loginUser
               <button onClick={()=>showReplies()} className="mt-3 text-md cursor-pointer text-[#1a46cb]"><TiArrowSortedDown className="inline-block text-lg"/> see replies</button>
               {isReplyCreation? 
               <>
-                <ReplyCreation postId={postId} queryKey={isPostDetails ? ["getPostComments", postId] : ["getAllPosts"]} commentId={commentId}/>
+                <ReplyCreation postId={postId} queryKey={["getCommentReplies", commentId]} commentId={commentId}/>
               </>: ""}
               {isReplyShown? 
               <>
