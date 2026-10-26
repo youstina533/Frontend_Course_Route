@@ -6,10 +6,10 @@ import Post from './../../../Components/Posts/Post';
 import {Helmet} from "react-helmet"
 
 export default function PostDetailsWithTanStack() {
-    const {id} = useParams();
+    const {id:postId} = useParams();
 
     function getPostDetails(){
-      return axios.get(`https://route-posts.routemisr.com/posts/${id}`,{
+      return axios.get(`https://route-posts.routemisr.com/posts/${postId}`,{
         headers:{
             Authorization : `Bearer ${localStorage.getItem("userToken")}`
         }
@@ -17,7 +17,7 @@ export default function PostDetailsWithTanStack() {
     }
 
     const {data, isLoading, error, isError} = useQuery({
-        queryKey: ["getPostDetails", id],
+        queryKey: ["getPostDetails", postId],
         queryFn: getPostDetails
       })
 
@@ -32,7 +32,7 @@ export default function PostDetailsWithTanStack() {
       }
 
 
-    if (!id) return null;
+    if (!postId) return null;
 
   return (
     <>
@@ -40,7 +40,7 @@ export default function PostDetailsWithTanStack() {
           <title>Post Details</title>
       </Helmet>
       <div className="mt-30">
-       {data?.data.data.post && <Post post={data?.data.data.post} isPostDetails={true} queryKey={["getPostDetails", id]}/>} 
+       {data?.data.data.post && <Post post={data?.data.data.post} isPostDetails={true} queryKey={["getPostDetails", postId]}/>} 
       </div>
     </>
   )
