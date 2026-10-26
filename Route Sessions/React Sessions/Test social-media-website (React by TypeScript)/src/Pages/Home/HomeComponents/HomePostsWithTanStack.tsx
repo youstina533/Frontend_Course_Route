@@ -79,7 +79,7 @@ export default function HomePostsWithTanStack() {
       <div className="my-29">
         <PostCreation userImage={userData?.data.data.user.photo} />
         {data?.data.data.posts.map((post: PostType) => (
-          <Post post={post} key={post.id} isPostDetails={false} />
+          <Post post={post} key={post.id} isPostDetails={false} queryKey={["getAllPosts"]} />
           )
         )}
       </div> 
