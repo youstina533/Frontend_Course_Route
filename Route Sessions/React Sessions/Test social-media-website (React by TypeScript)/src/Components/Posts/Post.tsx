@@ -115,7 +115,7 @@ export default function Post({post, isPostDetails = false, queryKey} : {post:Pos
                       Edit <FaPencil/>
                     </button> 
                   </li>
-                  {isUpdateOpen && <PostUpdate onClose={() => setisUpdateOpen(false)} queryKey={queryKey} postId={postId} postMaker={user} body={body} image={body} />}
+                  {isUpdateOpen && <PostUpdate onClose={() => setisUpdateOpen(false)} queryKey={queryKey} postId={postId} postMaker={user} body={body} image={image} />}
                   <li>
                     <button onClick={()=>mutate()} disabled={isPending} className="flex disabled:cursor-not-allowed disabled:bg-slate-800 gap-3 p-3 hover:bg-slate-700 rounded-b-2xl hover:text-white cursor-pointer">
                       {isPending ? 
