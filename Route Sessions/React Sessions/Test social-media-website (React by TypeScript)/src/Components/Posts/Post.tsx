@@ -17,6 +17,8 @@ import { toast } from 'react-hot-toast';
 import { useQueryClient } from '@tanstack/react-query';
 import { FaSpinner } from "react-icons/fa";
 import { AiOutlineLike } from "react-icons/ai";
+import PostUpdate from './../PostUpdate/PostUpdate';
+
 
 export default function Post({post, isPostDetails = false, queryKey} : {post:PostType, isPostDetails?:boolean, queryKey:string[] }) {
   const {body, image, user, createdAt, topComment, _id:postId, commentsCount, likesCount, sharesCount,} = post
@@ -82,7 +84,12 @@ export default function Post({post, isPostDetails = false, queryKey} : {post:Pos
      toast.error(error.message);
     }
   })
- 
+
+  const [isUpdateOpen, setisUpdateOpen] = useState(false);
+
+  function showUpdatePopUp(){
+    setisUpdateOpen(true);  
+  }
 
   return (
     <>
@@ -103,7 +110,12 @@ export default function Post({post, isPostDetails = false, queryKey} : {post:Pos
               {isOpen &&
               <>
                 <ul className="bg-slate-300 rounded-2xl text-slate-800 absolute -inset-e-7 top-14">
-                  <li className="flex gap-7 p-3 hover:bg-slate-700 rounded-t-2xl hover:text-white cursor-pointer">Edit <FaPencil/></li> 
+                  <li>
+                    <button onClick={()=>showUpdatePopUp()} className="flex gap-7 p-3 hover:bg-slate-700 rounded-t-2xl hover:text-white cursor-pointer">
+                      Edit <FaPencil/>
+                    </button> 
+                  </li>
+                  {isUpdateOpen && <PostUpdate onClose={() => setisUpdateOpen(false)} queryKey={queryKey} postId={postId} postMaker={user} body={body} image={body} />}
                   <li>
                     <button onClick={()=>mutate()} disabled={isPending} className="flex disabled:cursor-not-allowed disabled:bg-slate-800 gap-3 p-3 hover:bg-slate-700 rounded-b-2xl hover:text-white cursor-pointer">
                       {isPending ? 
@@ -150,12 +162,12 @@ export default function Post({post, isPostDetails = false, queryKey} : {post:Pos
         <>
         {commentsData?.data.data.comments &&
         commentsData.data.data.comments.map((comment: CommentType) => (
-          <Comment isPostDetails={isPostDetails} comment={comment} postId ={postId} commentId={comment?._id} queryKey={isPostDetails ? ["getPostComments", postId] : ["getAllPosts"]} key={comment._id} loginUserId={loginUserId} commentMakerId={comment.commentCreator._id}/>
+          <Comment  comment={comment} postId ={postId} commentId={comment?._id} queryKey={isPostDetails ? ["getPostComments", postId] : ["getAllPosts"]} key={comment._id} loginUserId={loginUserId} commentMakerId={comment.commentCreator._id}/>
         ))}
         </> : 
         <>
         {topComment &&
-          <Comment isPostDetails={isPostDetails} comment={topComment} commentId={topComment?._id} postId ={postId} queryKey={isPostDetails ? ["getPostComments", postId] : ["getAllPosts"]} loginUserId={loginUserId} commentMakerId={topComment.commentCreator._id}/>
+          <Comment comment={topComment} commentId={topComment?._id} postId ={postId} queryKey={isPostDetails ? ["getPostComments", postId] : ["getAllPosts"]} loginUserId={loginUserId} commentMakerId={topComment.commentCreator._id}/>
         }
         </>
         }
