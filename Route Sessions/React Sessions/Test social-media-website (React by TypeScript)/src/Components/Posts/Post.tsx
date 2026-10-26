@@ -19,8 +19,6 @@ import { FaSpinner } from "react-icons/fa";
 
 
 
-
-
 export default function Post({post, isPostDetails = false, queryKey} : {post:PostType, isPostDetails?:boolean, queryKey:string[] }) {
   const {body, image, user, createdAt, topComment, _id, commentsCount, likesCount, sharesCount} = post
   const {name, photo, _id:postMakerId} = user
@@ -42,6 +40,7 @@ export default function Post({post, isPostDetails = false, queryKey} : {post:Pos
   })
 
   console.log(commentsData?.data.data.comments);
+
 
   function handleDeletePost(){
    return axios.delete(`https://route-posts.routemisr.com/posts/${_id}`,{
@@ -124,14 +123,17 @@ export default function Post({post, isPostDetails = false, queryKey} : {post:Pos
         <>
         {commentsData?.data.data.comments &&
         commentsData.data.data.comments.map((comment: CommentType) => (
-          <Comment comment={comment} key ={comment._id}/>
+          <Comment comment={comment} postId ={_id} commentId={comment?._id} queryKey={queryKey} key ={comment._id}/>
         ))}
         </> : 
-         <Comment comment={topComment}/>
+        <>
+        {topComment &&
+          <Comment comment={topComment} commentId={topComment?._id} postId ={_id} queryKey={queryKey}/>
+        }
+        </>
         }
        
       </div>
     </>
   )
 }
-
