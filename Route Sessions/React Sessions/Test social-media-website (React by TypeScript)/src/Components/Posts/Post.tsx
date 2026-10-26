@@ -11,13 +11,16 @@ import CommentCreation from './../CommentCreation/CommentCreation';
 import { BsThreeDots } from "react-icons/bs";
 import { FaPencil } from "react-icons/fa6";
 import { FaTrash } from "react-icons/fa";
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { AuthContext } from './../../Context/AuthContextValue';
+
 
 
 export default function Post({post, isPostDetails = false} : {post:PostType, isPostDetails?:boolean }) {
   const {body, image, user, createdAt, topComment, _id, commentsCount, likesCount, sharesCount} = post
-  const {name, photo} = user
-  const [isOpen, setisOpen] = useState(false)
+  const {name, photo, _id:postMakerId} = user
+  const [isOpen, setisOpen] = useState(false);
+  const {userId: loginUserId} = useContext(AuthContext)
   
 
   function getPostComments(){
@@ -46,18 +49,19 @@ export default function Post({post, isPostDetails = false} : {post:PostType, isP
               <p className="text-sm text-slate-500 ">{createdAt}</p>
             </div>
           </div>
+         {loginUserId === postMakerId &&  
           <div className="relative">
-            <button type="button" onClick={() => setisOpen(!isOpen)} className="cursor-pointer absolute inset-e-5 top-7">
-              <BsThreeDots className="text-2xl"/>
-            </button>
-            {isOpen &&
-            <>
-              <ul className="bg-slate-300 rounded-2xl text-slate-800 absolute -inset-e-7 top-14">
-                <li className="flex gap-7 p-3 hover:bg-slate-700 rounded-t-2xl hover:text-white">Edit <FaPencil/></li> 
-                <li className="flex gap-3 p-3 hover:bg-slate-700 rounded-b-2xl hover:text-white">Delete <FaTrash/> </li>
-              </ul>
-            </>}
-          </div>
+              <button type="button" onClick={() => setisOpen(!isOpen)} className="cursor-pointer absolute inset-e-5 top-7">
+                <BsThreeDots className="text-2xl"/>
+              </button>
+              {isOpen &&
+              <>
+                <ul className="bg-slate-300 rounded-2xl text-slate-800 absolute -inset-e-7 top-14">
+                  <li className="flex gap-7 p-3 hover:bg-slate-700 rounded-t-2xl hover:text-white cursor-pointer">Edit <FaPencil/></li> 
+                  <li className="flex gap-3 p-3 hover:bg-slate-700 rounded-b-2xl hover:text-white cursor-pointer">Delete <FaTrash/> </li>
+                </ul>
+              </>}
+            </div>}
         </div>
         <div>
           {body && <p className="px-6 py-3 text-lg ">{body}</p> }
