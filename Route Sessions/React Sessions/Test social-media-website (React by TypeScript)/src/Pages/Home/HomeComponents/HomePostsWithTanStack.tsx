@@ -77,7 +77,7 @@ export default function HomePostsWithTanStack() {
         <title>Home</title>
       </Helmet>
       <div className="my-29">
-        <PostCreation userImage={userData?.data.data.user.photo} />
+        <PostCreation userImage={userData?.data.data.user.photo} queryKey={["getAllPosts"]} />
         {data?.data.data.posts.map((post: PostType) => (
           <Post post={post} key={post.id} isPostDetails={false} queryKey={["getAllPosts"]} />
           )
