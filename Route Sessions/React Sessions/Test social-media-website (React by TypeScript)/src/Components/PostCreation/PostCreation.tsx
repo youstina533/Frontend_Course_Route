@@ -8,7 +8,7 @@ import { type ChangeEvent } from "react";
 import toast from 'react-hot-toast';
 
 
-export default function PostCreation({userImage}:{userImage?:string}) {
+export default function PostCreation({userImage, queryKey}:{userImage?:string, queryKey:string[]}) {
  const [isUpload, setisUpload]= useState("");
 
  const postFormData = new FormData();
@@ -43,10 +43,10 @@ export default function PostCreation({userImage}:{userImage?:string}) {
  const {isPending, mutate} = useMutation({
   mutationFn: createPost,
   onSuccess: (res)=>{
-   console.log(res);
-   query.invalidateQueries({queryKey: ["getAllPosts"]})
-   clearInput();
-   toast.success(res.data.message, { style: { zIndex: 999 } });
+    console.log(res);
+    query.invalidateQueries({queryKey: queryKey})
+    clearInput();
+    toast.success(res.data.message, { style: { zIndex: 999 } });
   },
   onError(err){
     toast.error(err.message);
@@ -67,9 +67,8 @@ export default function PostCreation({userImage}:{userImage?:string}) {
 
   return (
     <>
-      <div className="mx-auto xl:w-[50%] bg-white rounded-3xl my-6 p-6 shadow-xl">
+    <div className="mx-auto xl:w-[50%] bg-white rounded-3xl my-6 p-6 shadow-xl">
       <form>
-        
         <div className="flex gap-4">
           <img
             src={userImage}
@@ -129,6 +128,6 @@ export default function PostCreation({userImage}:{userImage?:string}) {
         </div>
       </form>
     </div>
-    </>
+   </>
   )
 }
