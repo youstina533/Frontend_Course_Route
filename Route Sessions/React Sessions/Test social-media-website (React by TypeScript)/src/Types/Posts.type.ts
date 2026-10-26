@@ -7,7 +7,7 @@ export interface PostType {
   user: User
   image: string,
   sharedPost: object | null
-  likes: number[]
+  likes: string[]
   createdAt: string
   commentsCount: number
   topComment: CommentType
