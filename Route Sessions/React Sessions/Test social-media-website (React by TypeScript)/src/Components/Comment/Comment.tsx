@@ -14,6 +14,8 @@ import { BsThreeDots } from "react-icons/bs";
 import { FaPencil } from "react-icons/fa6";
 import { FaTrash } from "react-icons/fa";
 import { FaSpinner } from "react-icons/fa";
+import CommentUpdate from './../CommentUpdate/CommentUpdate';
+
 
 
 export default function Comment({comment, postId, commentId, queryKey, loginUserId, commentMakerId} : {comment : CommentType, postId:string, commentId:string, queryKey:string[], loginUserId:string, commentMakerId:string}) {
@@ -85,6 +87,11 @@ export default function Comment({comment, postId, commentId, queryKey, loginUser
     }
   })
  
+  const [isUpdateOpen, setisUpdateOpen] = useState(false);
+
+  function showUpdatePopUp(){
+    setisUpdateOpen(true);  
+  }
 
   return (
     <>
@@ -143,7 +150,8 @@ export default function Comment({comment, postId, commentId, queryKey, loginUser
               {isOpen &&
               <>
                 <ul className="bg-slate-300 rounded-2xl text-slate-800 absolute -inset-e-7 top-14">
-                  <li className="flex gap-7 p-3 hover:bg-slate-700 rounded-t-2xl hover:text-white cursor-pointer">Edit <FaPencil/></li> 
+                  <button onClick={()=>showUpdatePopUp()} className="flex gap-7 p-3 hover:bg-slate-700 rounded-t-2xl hover:text-white cursor-pointer">Edit <FaPencil/></button> 
+                  {isUpdateOpen && <CommentUpdate onClose={() => setisUpdateOpen(false)} postId={postId} queryKey={queryKey} commentId={commentId} content={comment.content} image={comment.image} />}
                   <li>
                     <button onClick={()=>deleteComment()} disabled={isPending} className="flex disabled:cursor-not-allowed disabled:bg-slate-800 gap-3 p-3 hover:bg-slate-700 rounded-b-2xl hover:text-white cursor-pointer">
                       {isPending ? 
