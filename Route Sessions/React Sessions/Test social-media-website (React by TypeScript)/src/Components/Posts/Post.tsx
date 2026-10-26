@@ -19,21 +19,21 @@ import { FaSpinner } from "react-icons/fa";
 import { AiOutlineLike } from "react-icons/ai";
 
 export default function Post({post, isPostDetails = false, queryKey} : {post:PostType, isPostDetails?:boolean, queryKey:string[] }) {
-  const {body, image, user, createdAt, topComment, _id, commentsCount, likesCount, sharesCount,} = post
+  const {body, image, user, createdAt, topComment, _id:postId, commentsCount, likesCount, sharesCount,} = post
   const {name, photo, _id:postMakerId} = user
   const [isOpen, setisOpen] = useState(false);
   const {userId: loginUserId} = useContext(AuthContext)
   
 
   function getPostComments(){
-    return axios.get(`https://route-posts.routemisr.com/posts/${_id}/comments?page=1&limit=50`,{
+    return axios.get(`https://route-posts.routemisr.com/posts/${postId}/comments?page=1&limit=50`,{
      headers:{ Authorization: `Bearer ${localStorage.getItem("userToken")}`}
     }
     )
   }
 
   const {data:commentsData} = useQuery({
-    queryKey: ["getPostComments", _id],
+    queryKey: ["getPostComments", postId],
     queryFn : getPostComments,
     enabled: isPostDetails //34an lw ana feh home may3ml4 fetch l data (all comments) asln al data hatb2a undefined haygebha lw ana feh Post details
   })
@@ -41,7 +41,7 @@ export default function Post({post, isPostDetails = false, queryKey} : {post:Pos
 
 
   function handleDeletePost(){
-   return axios.delete(`https://route-posts.routemisr.com/posts/${_id}`,{
+   return axios.delete(`https://route-posts.routemisr.com/posts/${postId}`,{
     headers: {Authorization: `Bearer ${localStorage.getItem("userToken")}`}
    })
   }
@@ -66,7 +66,7 @@ export default function Post({post, isPostDetails = false, queryKey} : {post:Pos
   const isPostLiked = post.likes?.includes(loginUserId);
 
   function makePostLiked(){
-    return axios.put(`https://route-posts.routemisr.com/posts/${_id}/like`,{},{
+    return axios.put(`https://route-posts.routemisr.com/posts/${postId}/like`,{},{
      headers:{ Authorization: `Bearer ${localStorage.getItem("userToken")}`}
     }
     )
@@ -139,23 +139,23 @@ export default function Post({post, isPostDetails = false, queryKey} : {post:Pos
             </>
             }
           </button>
-          <Link to={`/postdetails/${_id}`}>
+          <Link to={`/postdetails/${postId}`}>
           <div className="font-bold cursor-pointer flex gap-2 items-center">Comment <FaCommentAlt/></div>
           </Link>
           <button className="font-bold cursor-pointer flex gap-2 items-center">Share <FaShare/></button>
         </div>
-        <CommentCreation postId={ _id} queryKey={isPostDetails ? ["getPostComments", _id]  : ["getAllPosts"] }/>
+        <CommentCreation postId={postId} queryKey={isPostDetails ? ["getPostComments", postId]  : ["getAllPosts"] }/>
 
         {isPostDetails ?
         <>
         {commentsData?.data.data.comments &&
         commentsData.data.data.comments.map((comment: CommentType) => (
-          <Comment comment={comment} postId ={_id} commentId={comment?._id} queryKey={queryKey} key ={comment._id} loginUserId={loginUserId}/>
+          <Comment isPostDetails={isPostDetails} comment={comment} postId ={postId} commentId={comment?._id} queryKey={isPostDetails ? ["getPostComments", postId] : ["getAllPosts"]} key={comment._id} loginUserId={loginUserId} commentMakerId={comment.commentCreator._id}/>
         ))}
         </> : 
         <>
         {topComment &&
-          <Comment comment={topComment} commentId={topComment?._id} postId ={_id} queryKey={queryKey} loginUserId={loginUserId}/>
+          <Comment isPostDetails={isPostDetails} comment={topComment} commentId={topComment?._id} postId ={postId} queryKey={isPostDetails ? ["getPostComments", postId] : ["getAllPosts"]} loginUserId={loginUserId} commentMakerId={topComment.commentCreator._id}/>
         }
         </>
         }
