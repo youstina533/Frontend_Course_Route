@@ -31,15 +31,17 @@ export default function PostDetailsWithTanStack() {
         return <h1 className="font-extrabold my-30 mx-auto">{error?.message}</h1>
       }
 
+
+    if (!id) return null;
+
   return (
     <>
-     <Helmet>
-        <title>Post Details</title>
+      <Helmet>
+          <title>Post Details</title>
       </Helmet>
       <div className="mt-30">
-       {data?.data.data.post && <Post post={data?.data.data.post} isPostDetails={true}/>} 
+       {data?.data.data.post && <Post post={data?.data.data.post} isPostDetails={true} queryKey={["getPostDetails", id]}/>} 
       </div>
     </>
   )
 }
-
