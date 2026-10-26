@@ -6,9 +6,14 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import ReplyCreation from "../ReplyCreation/ReplyCreation";
+import { useMutation } from '@tanstack/react-query';
+import { toast } from 'react-hot-toast';
+import { useQueryClient } from '@tanstack/react-query';
+import { AiFillLike } from "react-icons/ai";
 
 
-export default function Comment({comment, postId, commentId, queryKey} : {comment : CommentType, postId:string, commentId:string, queryKey:string[]}) {
+
+export default function Comment({comment, postId, commentId, queryKey, loginUserId} : {comment : CommentType, postId:string, commentId:string, queryKey:string[], loginUserId:string}) {
   const [isReplyShown, setisReplyDhown] = useState(false);
 
   function showReplies(){
@@ -27,13 +32,35 @@ export default function Comment({comment, postId, commentId, queryKey} : {commen
     queryFn : getCommentReplies,
   })
 
-  console.log(replies?.data.data.replies);
 
   const [isReplyCreation, setisReplyCreation] = useState(false);
 
   function showReplyCreation(){
-     setisReplyCreation(!isReplyCreation)
+    setisReplyCreation(!isReplyCreation)
   }
+
+  const isCommentLiked = comment.likes?.includes(loginUserId);
+
+  function makeCommentLiked(){
+    return axios.put(`https://route-posts.routemisr.com/posts/${postId}/comments/${commentId}/like`,{},{
+     headers:{ Authorization: `Bearer ${localStorage.getItem("userToken")}`}
+    }
+    )
+  }
+
+  const query = useQueryClient();
+
+  const {mutate:likeComment} = useMutation({
+    mutationFn: makeCommentLiked,
+    onSuccess: (res)=>{
+     query.invalidateQueries({queryKey: queryKey});
+     toast.success(res.data.message);
+    },
+    onError: (error)=>{
+     toast.error(error.message);
+    }
+  })
+ 
 
   return (
     <>
@@ -46,7 +73,16 @@ export default function Comment({comment, postId, commentId, queryKey} : {commen
                     <p className="comment-content pt-3">{comment?.content}</p>
                    {comment?.image ? <img src={comment?.image} alt={comment?.content}  /> : ""} 
                     <div className="mt-4 mb-1 flex gap-5">
-                      <button className="text-xl cursor-pointer"><AiOutlineLike/></button>
+                      <button onClick={()=> likeComment()} className="text-xl cursor-pointer">
+                        {isCommentLiked ?
+                        <>
+                        <AiFillLike/>
+                        </>:
+                        <>
+                        <AiOutlineLike/>
+                        </>}
+                        
+                      </button>
                       <button onClick={()=>showReplyCreation()} className="cursor-pointer text-sm"><FaRegComment className="inline-block text-xl me-2"/>make a reply</button>
                     </div>
                     <button onClick={()=>showReplies()} className="mt-3 text-md cursor-pointer text-[#1a46cb]"><TiArrowSortedDown className="inline-block text-lg"/> see replies</button>
@@ -77,4 +113,3 @@ export default function Comment({comment, postId, commentId, queryKey} : {commen
     </>
   )
 }
-
