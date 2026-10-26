@@ -16,11 +16,10 @@ import { AuthContext } from './../../Context/AuthContextValue';
 import { toast } from 'react-hot-toast';
 import { useQueryClient } from '@tanstack/react-query';
 import { FaSpinner } from "react-icons/fa";
-
-
+import { AiOutlineLike } from "react-icons/ai";
 
 export default function Post({post, isPostDetails = false, queryKey} : {post:PostType, isPostDetails?:boolean, queryKey:string[] }) {
-  const {body, image, user, createdAt, topComment, _id, commentsCount, likesCount, sharesCount} = post
+  const {body, image, user, createdAt, topComment, _id, commentsCount, likesCount, sharesCount,} = post
   const {name, photo, _id:postMakerId} = user
   const [isOpen, setisOpen] = useState(false);
   const {userId: loginUserId} = useContext(AuthContext)
@@ -39,7 +38,6 @@ export default function Post({post, isPostDetails = false, queryKey} : {post:Pos
     enabled: isPostDetails //34an lw ana feh home may3ml4 fetch l data (all comments) asln al data hatb2a undefined haygebha lw ana feh Post details
   })
 
-  console.log(commentsData?.data.data.comments);
 
 
   function handleDeletePost(){
@@ -54,11 +52,31 @@ export default function Post({post, isPostDetails = false, queryKey} : {post:Pos
   const {mutate, isPending} = useMutation({
     mutationFn: handleDeletePost,
     onSuccess: (res)=>{
-     toast.success(res.data.message);
      query.invalidateQueries({queryKey: queryKey});
+     toast.success(res.data.message);
      if(isPostDetails === true ){
         navigate("/home");
      }
+    },
+    onError: (error)=>{
+     toast.error(error.message);
+    }
+  })
+  
+  const isPostLiked = post.likes?.includes(loginUserId);
+
+  function makePostLiked(){
+    return axios.put(`https://route-posts.routemisr.com/posts/${_id}/like`,{},{
+     headers:{ Authorization: `Bearer ${localStorage.getItem("userToken")}`}
+    }
+    )
+  }
+
+  const {mutate:likePost} = useMutation({
+    mutationFn: makePostLiked,
+    onSuccess: (res)=>{
+     toast.success(res.data.message);
+     query.invalidateQueries({queryKey: queryKey});
     },
     onError: (error)=>{
      toast.error(error.message);
@@ -89,7 +107,7 @@ export default function Post({post, isPostDetails = false, queryKey} : {post:Pos
                   <li>
                     <button onClick={()=>mutate()} disabled={isPending} className="flex disabled:cursor-not-allowed disabled:bg-slate-800 gap-3 p-3 hover:bg-slate-700 rounded-b-2xl hover:text-white cursor-pointer">
                       {isPending ? 
-                        <> Pending <FaSpinner className="animate-spinner"/>
+                        <> Pending <FaSpinner className="animate-spin"/>
                         </>
                         : 
                         <>Delete <FaTrash/>
@@ -111,11 +129,20 @@ export default function Post({post, isPostDetails = false, queryKey} : {post:Pos
         </div>
         <hr className="mx-auto w-[93%] border-t border-gray-200"/>
         <div className="py-4 px-6  flex justify-between bg-white  rounded-sm">
-          <div className="font-bold cursor-pointer flex gap-2 items-center">Like <AiFillLike/></div>
+          <button onClick={()=>likePost()} className="font-bold cursor-pointer flex gap-2 items-center">Like 
+            {isPostLiked?
+            <>
+             <AiFillLike className="text-2xl"/>
+            </>:
+            <>
+             <AiOutlineLike className="text-xl"/>
+            </>
+            }
+          </button>
           <Link to={`/postdetails/${_id}`}>
           <div className="font-bold cursor-pointer flex gap-2 items-center">Comment <FaCommentAlt/></div>
           </Link>
-          <div className="font-bold cursor-pointer flex gap-2 items-center">Share <FaShare/></div>
+          <button className="font-bold cursor-pointer flex gap-2 items-center">Share <FaShare/></button>
         </div>
         <CommentCreation postId={ _id} queryKey={isPostDetails ? ["getPostComments", _id]  : ["getAllPosts"] }/>
 
@@ -123,12 +150,12 @@ export default function Post({post, isPostDetails = false, queryKey} : {post:Pos
         <>
         {commentsData?.data.data.comments &&
         commentsData.data.data.comments.map((comment: CommentType) => (
-          <Comment comment={comment} postId ={_id} commentId={comment?._id} queryKey={queryKey} key ={comment._id}/>
+          <Comment comment={comment} postId ={_id} commentId={comment?._id} queryKey={queryKey} key ={comment._id} loginUserId={loginUserId}/>
         ))}
         </> : 
         <>
         {topComment &&
-          <Comment comment={topComment} commentId={topComment?._id} postId ={_id} queryKey={queryKey}/>
+          <Comment comment={topComment} commentId={topComment?._id} postId ={_id} queryKey={queryKey} loginUserId={loginUserId}/>
         }
         </>
         }
