@@ -2,8 +2,39 @@ import { type CommentType } from "../../Types/Comment.type"
 import { AiOutlineLike } from "react-icons/ai";
 import { FaRegComment } from "react-icons/fa";
 import { TiArrowSortedDown } from "react-icons/ti";
+import { useState } from 'react';
+import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
+import ReplyCreation from "../ReplyCreation/ReplyCreation";
 
-export default function Comment({comment} : {comment : CommentType}) {
+
+export default function Comment({comment, postId, commentId, queryKey} : {comment : CommentType, postId:string, commentId:string, queryKey:string[]}) {
+  const [isReplyShown, setisReplyDhown] = useState(false);
+
+  function showReplies(){
+    setisReplyDhown(!isReplyShown);
+  }
+
+  function getCommentReplies(){
+    return axios.get(`https://route-posts.routemisr.com/posts/${postId}/comments/${commentId}/replies?page=1&limit=10`,{
+     headers:{ Authorization: `Bearer ${localStorage.getItem("userToken")}`}
+    }
+    )
+  }
+
+  const {data:replies} = useQuery({
+    queryKey: ["getCommentReplies"],
+    queryFn : getCommentReplies,
+  })
+
+  console.log(replies?.data.data.replies);
+
+  const [isReplyCreation, setisReplyCreation] = useState(false);
+
+  function showReplyCreation(){
+     setisReplyCreation(!isReplyCreation)
+  }
+
   return (
     <>
       <div className="comment mt-5 p-3">
@@ -16,12 +47,34 @@ export default function Comment({comment} : {comment : CommentType}) {
                    {comment?.image ? <img src={comment?.image} alt={comment?.content}  /> : ""} 
                     <div className="mt-4 mb-1 flex gap-5">
                       <button className="text-xl cursor-pointer"><AiOutlineLike/></button>
-                      <button className="cursor-pointer text-sm"><FaRegComment className="inline-block text-xl me-2"/>make a reply</button>
+                      <button onClick={()=>showReplyCreation()} className="cursor-pointer text-sm"><FaRegComment className="inline-block text-xl me-2"/>make a reply</button>
                     </div>
-                    <button className="mt-3 text-md cursor-pointer text-[#1a46cb]"><TiArrowSortedDown className="inline-block text-lg"/> see replies</button>
+                    <button onClick={()=>showReplies()} className="mt-3 text-md cursor-pointer text-[#1a46cb]"><TiArrowSortedDown className="inline-block text-lg"/> see replies</button>
+                    {isReplyCreation? 
+                    <>
+                     <ReplyCreation postId={postId} queryKey={queryKey} commentId={commentId}/>
+                    </>: ""}
+                    {isReplyShown? 
+                    <>
+                    {replies?.data.data.replies.map((reply: CommentType)=>{
+                      return(
+                      <div key={reply._id} className="flex gap-4 itesm-center mt-3">
+                        <img src={reply?.commentCreator.photo} className="w-10 h-10 rounded-full border-2 border-white " alt="post-owner-image"/>
+                        <div>
+                            <p className="font-bold ">{reply?.commentCreator.name}</p>
+                            <p className="text-sm text-slate-500 ">{reply?.createdAt}</p>
+                            <p className="comment-content pt-3">{reply?.content}</p>
+                            {reply?.image ? <img src={reply?.image} alt={reply?.content}  /> : ""} 
+                        </div>
+                      </div>
+                      )
+                    })}
+                    </>
+                    : ""}
                 </div>
             </div>
         </div>
     </>
   )
 }
+
