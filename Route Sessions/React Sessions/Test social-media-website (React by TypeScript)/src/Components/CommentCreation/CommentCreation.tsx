@@ -31,6 +31,7 @@ export default function CommentCreation({postId, queryKey}: {postId : string, qu
         onSuccess: (res) =>{
             reset();
             query.invalidateQueries({queryKey: queryKey })
+            query.invalidateQueries({queryKey: ["getUserData"]});
             toast.success(res.data.message, { style: { zIndex: 999 } });
         },
         onError:(err) => {
@@ -76,5 +77,3 @@ export default function CommentCreation({postId, queryKey}: {postId : string, qu
     </>
   )
 }
-
-
