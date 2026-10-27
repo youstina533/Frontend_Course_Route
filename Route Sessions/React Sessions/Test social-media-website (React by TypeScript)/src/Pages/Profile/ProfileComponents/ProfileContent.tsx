@@ -2,6 +2,15 @@ import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import PostCreation from '../../../Components/PostCreation/PostCreation';
 import {Helmet} from "react-helmet"
+import { type UserType} from './../../../Types/User.type';
+import { SlCalender } from "react-icons/sl";
+import { MdAlternateEmail } from "react-icons/md";
+import { FaTransgender } from "react-icons/fa";
+// import { jwtDecode } from 'jwt-decode';
+import Post from './../../../Components/Posts/Post';
+import { type PostType } from './../../../Types/Posts.type';
+
+
 
 export default function ProfileContent() {
  
@@ -13,18 +22,76 @@ export default function ProfileContent() {
       })
     }
 
-  const {data} = useQuery({
+  const {data, isLoading:MyProfileLoading, isError:MyProfileError} = useQuery({
     queryKey: ["getUserData"],
     queryFn: getUserData
   })
-  console.log(data);
+
+  const user:UserType = data?.data.data.user;
+
+  // const {user:userId} : {user:string} = jwtDecode(localStorage.getItem("userToken")) // bageb al Id mn local strorage 34an may3tmd4 3la al request data of profile 34an yegeb al posts efrd et2a5rt
+  // // bs m4 hatnf3 lw a5t nafs al request wa nadet 3la posts tanya m4 beta3ty sa3tha hayb3t al ID beta3y ana 
+
+  function getMyPosts(){
+    return axios.get(`https://route-posts.routemisr.com/users/${user._id}/posts`,{
+        headers:{
+          Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+        }
+      })
+  }
+
+  const {data:MyPostsData} = useQuery({
+    queryKey:["getMyPosts"],
+    queryFn: getMyPosts,
+    enabled: !MyProfileLoading && !MyProfileError && !!data,
+  })
+
+  
+
 
   return (
     <>
-     <Helmet>
+      <Helmet>
           <title>Profile</title>
       </Helmet>
-      <PostCreation userImage={data?.data.data.user.photo}/>
+     {user &&
+     <>
+      <div className="xl:w-[50%] mx-auto mt-20 bg-white shadow-xl rounded-lg text-gray-900">
+        <div className="rounded-t-lg h-32 overflow-hidden">
+        {user.cover &&   <img className="object-cover object-top w-full" src={user?.cover} alt={user?.name} />}
+        </div>
+        <div className="mx-auto w-32 h-32 relative -mt-16 border-4 border-white rounded-full overflow-hidden">
+          <img className="object-cover object-center h-32" src={user?.photo} alt={user?.name} />
+        </div>
+        <div className="text-center mt-2">
+          <h2 className="font-semibold">{user?.username}</h2>
+          <p className="text-gray-500">{user?.followersCount} Followers</p>
+        </div>
+        <ul className="py-4 mt-2 text-gray-700 flex items-center justify-around">
+          <li className="flex flex-col items-center justify-around">
+            <SlCalender className="mb-4 text-2xl"/>
+            <div>{user?.dateOfBirth.split("T")[0]}</div>
+          </li>
+          <li className="flex flex-col items-center justify-between">
+            <MdAlternateEmail className="mb-4 text-2xl"/>
+            <div>{user?.email}</div>
+          </li>
+          <li className="flex flex-col items-center justify-around">
+            <FaTransgender className="mb-4 text-2xl"/>
+            <div>{user?.gender}</div>
+          </li>
+        </ul>
+        <div className="p-4 border-t mx-8 mt-2">
+          <button className="w-1/2 block mx-auto rounded-full bg-gray-900 hover:shadow-lg font-semibold text-white px-6 py-2">Follow</button>
+        </div>
+      </div>
+
+      <PostCreation userImage={data?.data.data.user.photo} queryKey={["getMyPosts"]}/>
+
+      {MyPostsData?.data.data.posts.map((post:PostType)=>(
+        <Post key={post._id} isPostDetails={false} post={post} queryKey={["getMyPosts"]}/> )) }
+
+      </>}
     </>
   )
 }
