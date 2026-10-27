@@ -55,6 +55,7 @@ export default function Post({post, isPostDetails = false, queryKey} : {post:Pos
     mutationFn: handleDeletePost,
     onSuccess: (res)=>{
      query.invalidateQueries({queryKey: queryKey});
+     query.invalidateQueries({queryKey: ["getUserData"]});
      toast.success(res.data.message);
      if(isPostDetails === true ){
         navigate("/home");
@@ -156,18 +157,18 @@ export default function Post({post, isPostDetails = false, queryKey} : {post:Pos
           </Link>
           <button className="font-bold cursor-pointer flex gap-2 items-center">Share <FaShare/></button>
         </div>
-        <CommentCreation postId={postId} queryKey={isPostDetails ? ["getPostComments", postId]  : ["getAllPosts"] }/>
+        <CommentCreation postId={postId} queryKey={isPostDetails ? ["getPostComments", postId]  : queryKey }/>
 
         {isPostDetails ?
         <>
         {commentsData?.data.data.comments &&
         commentsData.data.data.comments.map((comment: CommentType) => (
-          <Comment  comment={comment} postId ={postId} commentId={comment?._id} queryKey={isPostDetails ? ["getPostComments", postId] : ["getAllPosts"]} key={comment._id} loginUserId={loginUserId} commentMakerId={comment.commentCreator._id}/>
+          <Comment  comment={comment} postId ={postId} commentId={comment?._id} queryKey={isPostDetails ? ["getPostComments", postId] : queryKey} key={comment._id} loginUserId={loginUserId} commentMakerId={comment.commentCreator._id}/>
         ))}
         </> : 
         <>
         {topComment &&
-          <Comment comment={topComment} commentId={topComment?._id} postId ={postId} queryKey={isPostDetails ? ["getPostComments", postId] : ["getAllPosts"]} loginUserId={loginUserId} commentMakerId={topComment.commentCreator._id}/>
+          <Comment comment={topComment} commentId={topComment?._id} postId ={postId} queryKey={isPostDetails ? ["getPostComments", postId] : queryKey} loginUserId={loginUserId} commentMakerId={topComment.commentCreator._id}/>
         }
         </>
         }
