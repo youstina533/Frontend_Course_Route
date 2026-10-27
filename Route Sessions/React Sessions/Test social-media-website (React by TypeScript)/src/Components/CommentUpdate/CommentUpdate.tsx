@@ -1,24 +1,42 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
-import { useForm } from 'react-hook-form';
 import { FiShare } from "react-icons/fi";
 import { useMutation } from '@tanstack/react-query';
+import { useRef } from 'react';
 
 
- export default function CommentUpdate({onClose, postId, content, image, queryKey, commentId}: {onClose: () => void, postId:string , content:string, image:string, queryKey:string[], commentId:string}) {
-     const commentUpdateForm = useForm({
-        defaultValues:{
-            content: "",
-            image: "",
-        },
-    })
 
-    const CommentUpdateformData =  new FormData();
+ export default function CommentUpdate({onClose, postId, content, image, queryKey, commentId}: {onClose: () => void, postId:string , content:string, image: string, queryKey:string[], commentId:string}) {
 
-    const {register, handleSubmit, reset} = commentUpdateForm;
+    const CommentUpdateformData = new FormData();
 
     const query = useQueryClient();
+
+    const textInput = useRef<HTMLInputElement | null>(null);
+    const imageInput = useRef<HTMLInputElement | null>(null);
+
+    function handleUpdateComment(){ //formResponseObject dah object aly useForm btgam3o 
+     const file = imageInput.current?.files?.[0];
+
+        if(textInput.current?.value === "" && imageInput.current?.value === "" ) return;
+
+        if(textInput.current?.value){
+           CommentUpdateformData.append("content", textInput.current?.value);
+        }
+
+        if(file){
+           CommentUpdateformData.append("image", file);
+        }
+
+        mutate();
+    }
+    
+    function clearInput(){
+        if (textInput.current) textInput.current.value = "";
+        if (imageInput.current) imageInput.current.value = "";   // allowed for file inputs, only with ""
+    }
+
 
     function UpdateComment(){
         return axios.put(`https://route-posts.routemisr.com/posts/${postId}/comments/${commentId}`, CommentUpdateformData ,{
@@ -29,8 +47,9 @@ import { useMutation } from '@tanstack/react-query';
     const {isPending, mutate} = useMutation({
         mutationFn : UpdateComment,
         onSuccess: (res) =>{
-            reset();
+            clearInput()
             query.invalidateQueries({queryKey: queryKey })
+            query.invalidateQueries({queryKey: ["getUserData"]});
             toast.success(res.data.message, { style: { zIndex: 999 } });
             onClose()
         },
@@ -41,36 +60,24 @@ import { useMutation } from '@tanstack/react-query';
         }
     })
 
-    function handleUpdateComment(formResponseObject: {content: string, image: string}){ //formResponseObject dah object aly useForm btgam3o 
-        if(!formResponseObject.content && !formResponseObject.image){
-            return
-        }
-        if(formResponseObject.content){
-            CommentUpdateformData.append("content",formResponseObject.content); //content deh nafs al property aly 3ayzha al backend
-        }
-        if(formResponseObject.image){
-           CommentUpdateformData.append("image",formResponseObject.image[0]); //ana keda bab3t al sora m4 al path beta3ha //lw feh image hayb2a array 34an keda ba7t al index 
-        }
-        mutate()
-    }
+   
    return (
      <>
     <div onClick={onClose} className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
       <div onClick={(e) => e.stopPropagation()} className="w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         <div className="mx-auto xl:w-full bg-white rounded-3xl my-6 p-6 shadow-xl">
             <span className="text-2xl font-bold my-4">Update Comment</span>
-            <form className="mt-3" onSubmit={handleSubmit(handleUpdateComment)}>   
+            <form className="mt-3">  
                 <div className=" mx-10 relative">
-                    <input value={content} type="text" id="commentCreation" className="inline-block w-full p-2 ps-9 bg-slate-100 border border-[#98a7a9] text-lg rounded-2xl focus:ring-brand focus:border-brand shadow-xs placeholder:text-body" 
-                        {...register("content")}
+                    <input defaultValue={content} ref={textInput} type="text" id="commentCreation" className="inline-block w-full p-2 ps-9 bg-slate-100 border border-[#98a7a9] text-lg rounded-2xl focus:ring-brand focus:border-brand shadow-xs placeholder:text-body" 
+                        
                     />
                     <label className="absolute inset-e-26 top-1/2 -translate-y-1/2 border border-slate-400 flex items-center justify-center w-8 h-8 bg-white rounded-full cursor-pointer hover:bg-slate-100 transition">
                         <FiShare className="text-lg" />
-                        <input type="file" hidden value={image}
-                            {...register("image")}
+                        <input type="file" hidden  ref={imageInput} defaultValue={image}
                         />
                     </label>
-                    <button disabled={isPending} type="submit" className=" disabled:bg-slate-700 disabled:cursor-not-allowed cursor-pointer absolute inset-e-1.5 me-3 bottom-1.5 text-white bg-[#1C398E]  hover:bg-[#152967] box-border border border-transparent focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-2xl text-xs px-3 py-1.5 focus:outline-none">
+                    <button onClick={()=> handleUpdateComment()} type="button" disabled={isPending} className=" disabled:bg-slate-700 disabled:cursor-not-allowed cursor-pointer absolute inset-e-1.5 me-3 bottom-1.5 text-white bg-[#1C398E]  hover:bg-[#152967] box-border border border-transparent focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-2xl text-xs px-3 py-1.5 focus:outline-none">
                         {isPending ? "Loading" : "Submit" } 
                     </button>
                 </div>
